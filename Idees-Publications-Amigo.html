@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Idées de publications - Amigo Karting</title>
+<style>
+  :root { --rouge:#e23b2e; --noir:#15171c; --gris:#6b7280; --bg:#f4f5f7; --carte:#ffffff; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+         background:var(--bg); color:var(--noir); }
+  header { background:linear-gradient(135deg,#15171c,#e23b2e); color:#fff; padding:30px 22px 24px; }
+  header h1 { margin:0 0 6px; font-size:26px; }
+  header p { margin:0; opacity:.92; font-size:15px; }
+  .saison { display:inline-block; margin-top:12px; background:rgba(255,255,255,.16);
+            padding:6px 14px; border-radius:999px; font-size:14px; }
+  .barre { position:sticky; top:0; z-index:5; background:#fff; border-bottom:1px solid #e5e7eb;
+           padding:12px 22px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .gros-btn { background:var(--rouge); color:#fff; border:none; padding:12px 20px; border-radius:10px;
+              font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 2px 6px rgba(226,59,46,.35); }
+  .gros-btn:active { transform:translateY(1px); }
+  .recherche { flex:1 1 200px; min-width:160px; padding:9px 12px; border:1px solid #d1d5db;
+               border-radius:8px; font-size:14px; }
+  .filtre { border:1px solid #d1d5db; background:#fff; color:var(--noir); padding:7px 13px;
+            border-radius:999px; font-size:13px; cursor:pointer; }
+  .filtre.actif { background:var(--rouge); color:#fff; border-color:var(--rouge); }
+  .ligne-filtres { padding:10px 22px 0; display:flex; gap:8px; flex-wrap:wrap; max-width:1100px; margin:0 auto; }
+  .compteur { color:var(--gris); font-size:13px; }
+  main { padding:16px 22px 60px; max-width:1100px; margin:0 auto;
+         display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px; }
+  .carte { background:var(--carte); border:1px solid #e5e7eb; border-radius:14px; padding:18px;
+           display:flex; flex-direction:column; gap:10px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; }
+  .tag { font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px;
+         background:#fde8e6; color:var(--rouge); }
+  .tag.format { background:#eef2ff; color:#4338ca; }
+  .tag.moment { background:#ecfdf3; color:#067647; }
+  .carte h3 { margin:2px 0 0; font-size:17px; line-height:1.3; }
+  .pourquoi { font-size:13px; color:var(--gris); margin:0; }
+  .angle { font-size:13px; margin:0; background:#fffbeb; border-left:3px solid #f59e0b;
+           padding:7px 10px; border-radius:6px; }
+  .moment-ideal { font-size:12.5px; color:#4338ca; margin:0; }
+  .legende { background:#f9fafb; border-left:3px solid var(--rouge); padding:10px 12px;
+             border-radius:6px; font-size:13px; white-space:pre-wrap; }
+  .hash { font-size:12px; color:#4338ca; }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }
+  .btn { font-size:13px; padding:8px 12px; border-radius:8px; border:none; cursor:pointer;
+         text-decoration:none; display:inline-block; }
+  .btn-copier { background:var(--noir); color:#fff; }
+  .btn-exemple { background:#fff; color:var(--rouge); border:1px solid var(--rouge); }
+  .btn-suppr { background:#fff; color:#b91c1c; border:1px solid #b91c1c; }
+  .btn-bar { border:1px solid #d1d5db; background:#fff; color:var(--noir); padding:9px 14px;
+             border-radius:8px; font-size:14px; cursor:pointer; }
+  .btn-bar.actif { background:var(--rouge); color:#fff; border-color:var(--rouge); }
+  .btn-danger { background:#b91c1c; color:#fff; border:none; padding:9px 14px; border-radius:8px;
+                font-size:14px; cursor:pointer; }
+  .barre-actions { padding:10px 22px 0; max-width:1100px; margin:0 auto;
+                   display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .info-suppr { font-size:13px; color:var(--gris); }
+  .tags { padding-right:30px; }
+  .like { position:absolute; top:14px; right:14px; background:none; border:none;
+          font-size:22px; cursor:pointer; line-height:1; padding:0; }
+  .select-box { position:absolute; top:16px; left:14px; width:22px; height:22px; cursor:pointer; }
+  .grille.selection .carte { padding-left:46px; cursor:pointer; }
+  .carte.selected { outline:3px solid var(--rouge); outline-offset:1px; }
+  .vide { grid-column:1/-1; text-align:center; color:var(--gris); padding:40px 10px; font-size:15px; }
+  .carte { position:relative; }
+  /* barre du haut : recherche + menu */
+  .icone-btn { background:#fff; border:1px solid #d1d5db; border-radius:8px; font-size:18px;
+               width:42px; height:42px; cursor:pointer; line-height:1; }
+  .champ-recherche { position:relative; flex:1 1 230px; min-width:180px; display:flex; }
+  .champ-recherche .recherche { width:100%; padding-right:34px; }
+  .effacer { position:absolute; right:6px; top:50%; transform:translateY(-50%); border:none;
+             background:none; cursor:pointer; font-size:14px; color:var(--gris); }
+  .fil-actuel { max-width:1100px; margin:0 auto; padding:12px 22px 0; font-size:14px; color:var(--gris); }
+  .fil-actuel b { color:var(--noir); }
+  /* tiroir (menu hamburger) */
+  .overlay { position:fixed; inset:0; background:rgba(0,0,0,.35); opacity:0; pointer-events:none;
+             transition:opacity .2s; z-index:20; }
+  .overlay.ouvert { opacity:1; pointer-events:auto; }
+  .tiroir { position:fixed; top:0; left:0; height:100%; width:300px; max-width:85vw; background:#fff;
+            box-shadow:2px 0 16px rgba(0,0,0,.18); transform:translateX(-100%); transition:transform .22s;
+            z-index:21; display:flex; flex-direction:column; }
+  .tiroir.ouvert { transform:translateX(0); }
+  .tiroir-tete { display:flex; align-items:center; justify-content:space-between; padding:16px 18px;
+                 border-bottom:1px solid #e5e7eb; font-weight:700; font-size:17px; }
+  .tiroir-corps { overflow:auto; padding:8px 0 30px; }
+  .tiroir-section { padding:14px 18px 4px; font-size:12px; font-weight:700; letter-spacing:.04em;
+                    text-transform:uppercase; color:var(--gris); }
+  .tiroir-item { display:flex; align-items:center; gap:8px; width:100%; text-align:left;
+                 padding:10px 18px; font-size:15px; cursor:pointer; color:var(--noir); }
+  .tiroir-item:hover { background:#f4f5f7; }
+  .tiroir-item.actif { background:#fde8e6; color:var(--rouge); font-weight:600; }
+  .tiroir-item .compte { margin-left:auto; color:var(--gris); font-size:13px; }
+  .tiroir-item .mini { border:none; background:none; cursor:pointer; font-size:14px; color:var(--gris); padding:2px 3px; }
+  .tiroir-ajout { margin:8px 18px; display:flex; gap:6px; }
+  .tiroir-ajout input { flex:1; padding:8px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; }
+  .tiroir-ajout button { border:none; background:var(--rouge); color:#fff; border-radius:8px;
+                         padding:0 14px; cursor:pointer; font-size:16px; }
+  /* groupes : pastilles sur les cartes + popover */
+  .grp-chips { display:flex; gap:6px; flex-wrap:wrap; }
+  .grp-chip { font-size:11px; background:#eef2ff; color:#4338ca; border-radius:999px; padding:3px 8px;
+              display:inline-flex; align-items:center; gap:4px; }
+  .grp-chip button { border:none; background:none; cursor:pointer; color:#4338ca; font-size:12px; padding:0; }
+  .btn-grp { background:#fff; color:#4338ca; border:1px solid #4338ca; }
+  .pop { position:absolute; z-index:9; background:#fff; border:1px solid #d1d5db; border-radius:10px;
+         box-shadow:0 6px 20px rgba(0,0,0,.16); padding:8px; min-width:210px; right:14px; bottom:54px; }
+  .pop label { display:flex; align-items:center; gap:8px; padding:6px; font-size:14px; cursor:pointer; }
+  .pop .pop-new { display:flex; gap:6px; margin-top:6px; border-top:1px solid #eee; padding-top:8px; }
+  .pop .pop-new input { flex:1; padding:6px; border:1px solid #d1d5db; border-radius:6px; font-size:13px; }
+  .pop .pop-new button { border:none; background:var(--rouge); color:#fff; border-radius:6px; padding:0 10px; cursor:pointer; }
+  .pop .pop-vide { font-size:13px; color:var(--gris); padding:4px 6px; }
+  /* recette "Comment la réaliser" */
+  .recette { border:1px solid #e5e7eb; border-radius:10px; background:#fbfbfc; }
+  .recette > summary { cursor:pointer; padding:9px 12px; font-weight:700; font-size:13px;
+                       color:var(--rouge); list-style:none; }
+  .recette > summary::-webkit-details-marker { display:none; }
+  .recette > summary::before { content:'▸ '; }
+  .recette[open] > summary::before { content:'▾ '; }
+  .recette-corps { padding:2px 12px 12px; font-size:13px; }
+  .recette-bloc { margin:9px 0; }
+  .recette-label { font-weight:700; margin-bottom:2px; }
+  .recette-corps ul { margin:4px 0; padding-left:18px; }
+  .recette-corps li { margin:3px 0; }
+  .scene { border-left:3px solid #4338ca; padding:7px 10px; margin:8px 0; background:#f8f9ff; border-radius:6px; }
+  .scene > div { margin:2px 0; font-size:13px; }
+  .scene .scene-t { font-weight:700; color:#4338ca; }
+  /* badges plan / publié + idées perso */
+  .badge { font-size:11px; border-radius:999px; padding:3px 8px; }
+  .badge-plan { background:#eff6ff; color:#1d4ed8; }
+  .badge-pub { background:#ecfdf3; color:#067647; }
+  .carte.publie { opacity:.72; }
+  /* fenêtres (modales) */
+  .modale-fond { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:30; display:none;
+                 align-items:center; justify-content:center; padding:16px; }
+  .modale-fond.ouvert { display:flex; }
+  .modale { background:#fff; border-radius:14px; max-width:540px; width:100%; max-height:90vh;
+            overflow:auto; padding:22px; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+  .modale h2 { margin:0 0 6px; font-size:20px; }
+  .modale p { font-size:14px; color:#374151; line-height:1.6; margin:6px 0; }
+  .modale label { display:block; font-size:13px; font-weight:600; margin:12px 0 4px; }
+  .modale input, .modale select, .modale textarea { width:100%; padding:9px; border:1px solid #d1d5db;
+            border-radius:8px; font-size:14px; font-family:inherit; }
+  .modale textarea { min-height:72px; resize:vertical; }
+  .modale-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap; }
+  /* impression / PDF */
+  @media print {
+    header, .barre, .barre-actions, .fil-actuel, .tiroir, .overlay, .modale-fond, footer,
+    .like, .select-box, .actions, .recette { display:none !important; }
+    main { display:block; padding:0; max-width:100%; }
+    .carte { break-inside:avoid; box-shadow:none; border:1px solid #ccc; margin:0 0 10px; }
+  }
+  footer { text-align:center; color:var(--gris); font-size:12px; padding:0 22px 40px; line-height:1.6; }
+  @media (max-width:560px){ main{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏁 Idées de publications — Amigo Karting</h1>
+  <p>Gatineau, Québec · des idées ET des recettes prêtes à filmer pour Facebook, Instagram &amp; TikTok</p>
+  <div class="saison" id="saison"></div>
+</header>
+
+<div class="barre">
+  <button class="icone-btn" id="btnMenu" title="Menu, filtres et groupes">☰</button>
+  <button class="gros-btn" id="generer">✨ Générer</button>
+  <button class="btn-bar" id="btnNews" title="Chercher des actualités sur internet">🔄 Nouvelles</button>
+  <button class="btn-bar" id="btnFavoris">❤️ Favoris (0)</button>
+  <div class="champ-recherche">
+    <input id="recherche" class="recherche" placeholder="🔎 Rechercher une idée (mot, thème, hashtag)...">
+    <button class="effacer" id="effacerRecherche" title="Effacer" style="display:none">✕</button>
+  </div>
+  <span class="compteur" id="compteur"></span>
+  <span class="compteur" id="cycleNote" style="color:#067647;font-weight:600"></span>
+</div>
+
+<div class="barre-actions" id="barreSel" style="display:none">
+  <span class="info-suppr" id="selInfo">0 sélectionnée(s)</span>
+  <button class="btn-bar" id="selAll">Tout sélectionner</button>
+  <button class="btn-bar" id="selGroupe">📁 Classer dans un groupe</button>
+  <button class="btn-danger" id="selDelete">🗑️ Supprimer</button>
+  <button class="btn-bar" id="selCancel">Annuler</button>
+</div>
+
+<div class="fil-actuel" id="filActuel"></div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="tiroir" id="tiroir">
+  <div class="tiroir-tete"><span>☰ Menu</span>
+    <button class="icone-btn" id="fermerTiroir" title="Fermer">✕</button>
+  </div>
+  <div class="tiroir-corps" id="tiroirCorps"></div>
+</aside>
+
+<div class="modale-fond" id="modaleFond"><div class="modale" id="modaleBoite"></div></div>
+
+<main id="grille"></main>
+
+<footer>
+  Cet outil fonctionne <b>tout seul</b>, sur n'importe quel ordinateur, sans rien installer.<br>
+  « ✨ Générer » : de nouvelles idées à chaque clic. « 🔄 Nouvelles » : cherche les actualités sur internet (juste une connexion suffit).<br>
+  (Astuce : si tu as Claude sous la main, demande-lui « trouve de nouvelles idées pour Amigo Karting » pour des idées encore mieux écrites.)
+</footer>
+
+<!-- ====== BANQUE D'IDÉES (modifiable) ====== -->
+<script type="application/json" id="lib">
+{
+ "exemples": {
+  "Saisonnier": {
+   "url": "https://wizishop.com/blog/facebook-post-ideas",
+   "label": "21 exemples de publications Facebook qui cartonnent"
+  },
+  "Marronnier": {
+   "url": "https://www.altitudestrategies.ca/6-idees-incontournables-publications-facebook-pour-entreprise/",
+   "label": "6 idees incontournables (dates saisonnieres)"
+  },
+  "Video": {
+   "url": "https://www.flick.social/captions/go-kart-captions-for-instagram",
+   "label": "100+ legendes de karting (banque de captions)"
+  },
+  "Competition": {
+   "url": "https://parentmarketing.com/how-to-market-a-go-kart-track",
+   "label": "Strategies de classement pour pistes de karting"
+  },
+  "Concours": {
+   "url": "https://www.localranker.fr/blog/idees-publications-facebook-entreprise",
+   "label": "15 idees de publications Facebook (jeux-concours)"
+  },
+  "Coulisses": {
+   "url": "https://www.kreatif.ca/les-types-de-publications-qui-generent-le-plus-dengagement-au-quebec-en-2025-2026/",
+   "label": "Types de publications qui engagent le plus au Quebec"
+  },
+  "Promotion": {
+   "url": "https://parentmarketing.com/local-marketing-for-go-kart-tracks",
+   "label": "6 idees de marketing local pour pistes de karting"
+  },
+  "Famille": {
+   "url": "https://quoifaireenfamille.com/en/listing/recreation-centre/amigo-recreational-complex/",
+   "label": "Fiche 'quoi faire en famille' du complexe Amigo"
+  },
+  "Engagement": {
+   "url": "https://www.tactill.com/blog/animer-une-page-facebook-les-meilleures-idees-de-posts/",
+   "label": "Meilleures idees de posts pour animer une page"
+  },
+  "Temoignage": {
+   "url": "https://www.tripadvisor.ca/Attraction_Review-g182166-d5886101-Reviews-Complexe_Recreatif_Amigo-Gatineau_Outaouais_Region_Quebec.html",
+   "label": "Avis TripAdvisor d'Amigo (source de temoignages)"
+  },
+  "Educatif": {
+   "url": "https://amigokarting.com/circuit.php",
+   "label": "Page officielle du circuit Amigo (specs)"
+  },
+  "UGC": {
+   "url": "https://iqhashtags.com/hashtags/hashtag/karting",
+   "label": "Meilleurs hashtags #karting (Instagram/TikTok 2026)"
+  },
+  "Ambiance": {
+   "url": "https://www.instagram.com/amigokarting/",
+   "label": "Instagram d'Amigo (exemples de visuels d'ambiance)"
+  },
+  "Actualite": {
+   "url": "https://news.google.com/search?q=karting%20Gatineau&hl=fr-CA",
+   "label": "Actualites karting / Gatineau (Google Actualites)"
+  }
+ },
+ "idees": [
+  {
+   "titre": "Festival L'Outaouais en fete (19-24 juin) : capte les familles d'a cote",
+   "cat": "Actualite",
+   "format": "Image / Reel",
+   "mois": [
+    6
+   ],
+   "objectif": "Reservations",
+   "angle": "Pendant que des milliers de familles sont DEJA dehors et en mode loisir a 10 min de chez vous, deviens leur 'prochaine etape'. Tu ne crees pas la demande, tu la recuperes.",
+   "momentideal": "Du 17 au 24 juin, en story + 1 publication. Mets l'accent sur 'a 10 min du festival'.",
+   "pourquoi": "Le plus gros festival de la region (50e edition) concentre ton public cible au meme endroit, au meme moment. C'est de l'achalandage gratuit a detourner vers ta piste.",
+   "legende": "L'Outaouais en fete celebre ses 50 ANS du 19 au 24 juin ! Et tant qu'a etre dehors en famille... faites un detour par Amigo, juste a cote. Karting, mini-golf et trampolines pour finir la journee en beaute.",
+   "hashtags": "#AmigoKarting #OutaouaisEnFete #Gatineau #SaintJean #Karting",
+   "exemple_url": "https://outaouaisenfete.com/",
+   "exemple_label": "Festival L'Outaouais en fete — 19-24 juin 2026 (site officiel)",
+   "variantes": [
+    "Story 'forfait combo festival + karting' valable la semaine du festival",
+    "Reel d'un parcours type : matin festival, apres-midi piste"
+   ]
+  },
+  {
+   "titre": "Surfe sur la fievre F1 (Grand Prix) : ta piste, ta F1",
+   "cat": "Actualite",
+   "format": "Image / Reel",
+   "mois": [
+    5,
+    6
+   ],
+   "objectif": "Notoriete",
+   "angle": "Quand toute la province parle de F1, branche-toi sur la conversation au lieu de la regarder passer. Ton vrai chronometrage par transpondeurs te donne le droit de faire le parallele.",
+   "momentideal": "La semaine du Grand Prix, quand l'algorithme pousse tout ce qui touche la F1.",
+   "pourquoi": "Rebondir sur un evenement mediatique geant = portee enorme a cout zero. Et ca met en valeur ton atout F1 (transpondeurs).",
+   "legende": "La F1 te fait rever ? Pas besoin d'aller a Montreal pour vivre la course : chez Amigo, nos super-karts sont chronometres au transpondeur, comme en Formule 1. Viens decrocher ta pole position a Gatineau.",
+   "hashtags": "#AmigoKarting #F1 #GrandPrix #Karting #Gatineau",
+   "exemple_url": "https://www.mtl.org/fr/experience/montreal-formula-1-grand-prix",
+   "exemple_label": "GP de Montreal F1 2026 (Tourisme Montreal)",
+   "variantes": [
+    "Compare un vrai tableau de temps F1 a ton classement de la semaine",
+    "Defi : 'qui s'approche le plus du temps theorique parfait ?'"
+   ],
+   "script": [
+    {
+     "t": "0-3s",
+     "plan": "Images d'ambiance F1 / drapeau a damier",
+     "ecran": "La F1 te fait rever ?",
+     "voix": "Tout le monde parle du Grand Prix cette semaine..."
+    },
+    {
+     "t": "3-8s",
+     "plan": "Coupe sur un super-kart d'Amigo qui fonce",
+     "ecran": "Pas besoin d'aller a Montreal",
+     "voix": "Mais la vraie course, tu peux la vivre ici."
+    },
+    {
+     "t": "8-12s",
+     "plan": "Gros plan sur l'ecran de chronometrage (transpondeur)",
+     "ecran": "Chronometre au transpondeur, comme en F1",
+     "voix": "Meme technologie que la Formule 1."
+    },
+    {
+     "t": "12-16s",
+     "plan": "Le pilote decroche le meilleur temps et leve le poing",
+     "ecran": "Decroche ta pole position",
+     "voix": "A Gatineau. Cette semaine."
+    },
+    {
+     "t": "16-18s",
+     "plan": "Plan final sur la piste",
+     "ecran": "Tag un fan de F1",
+     "voix": "On t'attend sur la grille."
+    }
+   ]
+  },
+  {
+   "titre": "Mario Kart, mais en VRAI (tendance virale)",
+   "cat": "Actualite",
+   "format": "Reel (audio tendance)",
+   "mois": [
+    6,
+    7,
+    8
+   ],
+   "objectif": "Notoriete",
+   "angle": "Detourne une reference que TOUT le monde connait deja : le cerveau reconnait, sourit, et partage. Tu empruntes la notoriete de Mario Kart pour la tienne.",
+   "momentideal": "Quand le son/format tend (publie dans les 48h). Ideal les soirees d'ete.",
+   "pourquoi": "Les formats 'X en vrai' cartonnent car ils melent nostalgie + surprise. Tres partageables = portee organique.",
+   "legende": "Mario Kart... mais en VRAI ! Carapaces en moins, adrenaline en plus. Recree ta course preferee sur notre piste de 1,1 km. Qui est Luigi, qui est Bowser ? Tag ta gang !",
+   "hashtags": "#AmigoKarting #MarioKart #Karting #Gatineau #Viral",
+   "exemple_url": "https://www.tiktok.com/discover/karting-trend",
+   "exemple_label": "Tendances karting sur TikTok (real-life Mario Kart, edits...)",
+   "variantes": [
+    "Accessoires en carton (carapace, banane) pour le gag",
+    "Mini-tournoi 'coupe championne' entre amis avec podium"
+   ],
+   "script": [
+    {
+     "t": "0-2s",
+     "plan": "1 seconde d'un ecran du jeu Mario Kart",
+     "ecran": "Mario Kart...",
+     "voix": "(theme musical de Mario Kart)"
+    },
+    {
+     "t": "2-3s",
+     "plan": "Coupe nette sur la vraie piste, au meme angle",
+     "ecran": "...mais en VRAI",
+     "voix": "(le vrai son des karts)"
+    },
+    {
+     "t": "3-8s",
+     "plan": "Depart de plusieurs karts cote a cote",
+     "ecran": "Grille de depart !",
+     "voix": "3... 2... 1... GO !"
+    },
+    {
+     "t": "8-12s",
+     "plan": "Quelqu'un brandit une banane en carton avant un virage",
+     "ecran": "Attention a la banane",
+     "voix": "NOOON pas la banane !"
+    },
+    {
+     "t": "12-16s",
+     "plan": "Depassement serre, puis le vainqueur leve les bras",
+     "ecran": "Qui est Luigi ? Qui est Bowser ?",
+     "voix": "Champion !"
+    },
+    {
+     "t": "16-18s",
+     "plan": "Plan final",
+     "ecran": "Tag ta gang",
+     "voix": "Venez jouer pour vrai chez Amigo."
+    }
+   ]
+  },
+  {
+   "titre": "La saison est ENFIN ouverte",
+   "cat": "Saisonnier",
+   "format": "Reel video",
+   "mois": [
+    4
+   ],
+   "objectif": "Notoriete",
+   "angle": "L'ouverture, c'est ton seul vrai 'lancement' de l'annee : capitalise sur l'attente accumulee tout l'hiver plutot que d'annoncer ca platement.",
+   "momentideal": "Le jour 1 (debut avril), tot le matin pour donner le ton de la journee.",
+   "pourquoi": "Apres 4 mois fermes, ton audience a faim. Un contenu energique reactive toute la communaute d'un coup.",
+   "legende": "On a attendu tout l'hiver pour ca... LA SAISON EST OUVERTE ! Moteurs chauds, piste de 1,1 km prete. Qui vient faire son premier tour cette semaine ?",
+   "hashtags": "#AmigoKarting #Karting #Gatineau #Outaouais #OuvertureDeSaison",
+   "variantes": [
+    "Compte a rebours J-3, J-2, J-1 en story avant le grand jour",
+    "Offre 'premiers arrives' pour la fin de semaine d'ouverture"
+   ]
+  },
+  {
+   "titre": "POV : un tour de la piste eclairee au coucher de soleil",
+   "cat": "Video",
+   "format": "Reel / TikTok",
+   "mois": [],
+   "objectif": "Notoriete",
+   "angle": "Vends ce que tes concurrents n'ont pas : une piste ECLAIREE de 1,1 km a la tombee du jour. L'image fait le travail, pas le texte.",
+   "momentideal": "Publie en debut de soiree, quand les gens cherchent quoi faire ce soir.",
+   "pourquoi": "La video POV est l'un des formats les plus partages en karting, et la piste de nuit est un differenciateur visuel fort et memorable.",
+   "legende": "POV : ton prochain tour chez Amigo. 1,1 km de piste eclairee, juste toi et le moteur. On t'attend.",
+   "hashtags": "#AmigoKarting #POV #Karting #GoKart #Gatineau",
+   "variantes": [
+    "Version 'jour' vs 'nuit' en split-screen",
+    "Onboard d'un tour rapide avec le chrono qui s'affiche"
+   ],
+   "script": [
+    {
+     "t": "0-2s",
+     "plan": "Camera fixee sur le kart, gros plan sur l'acceleration",
+     "ecran": "POV : ton vendredi soir",
+     "voix": "(aucune parole - juste le moteur qui rugit)"
+    },
+    {
+     "t": "2-8s",
+     "plan": "Tour de piste, les lumieres s'allument au coucher de soleil",
+     "ecran": "1,1 km de piste eclairee",
+     "voix": "(son du moteur + musique tendance)"
+    },
+    {
+     "t": "8-14s",
+     "plan": "Une belle courbe serree, vue embarquee",
+     "ecran": "",
+     "voix": "(silence : on laisse l'image parler)"
+    },
+    {
+     "t": "14-18s",
+     "plan": "Ligne d'arrivee au ralenti",
+     "ecran": "A 5 min d'Ottawa-Gatineau",
+     "voix": "Tu fais quoi, vendredi ?"
+    },
+    {
+     "t": "18-20s",
+     "plan": "Retour au plan du depart (la video boucle)",
+     "ecran": "Enregistre + tag ta gang",
+     "voix": "On t'attend chez Amigo."
+    }
+   ]
+  },
+  {
+   "titre": "Le Mur des records (rendez-vous hebdo)",
+   "cat": "Competition",
+   "format": "Carrousel / Image",
+   "mois": [],
+   "objectif": "Fidelisation",
+   "angle": "Transforme une simple donnee (vos temps au transpondeur) en FRANCHISE recurrente. Un classement chaque semaine cree un rendez-vous et une raison de revenir 'defendre son titre'.",
+   "momentideal": "Chaque lundi (bilan de la semaine), pour relancer la semaine suivante.",
+   "pourquoi": "La competition + la repetition fidelisent : les gens reviennent pour battre leur temps et grimper. Ton chrono F1 rend ca credible.",
+   "legende": "Le Mur des records de la semaine est tombe ! Voici les 10 pilotes les plus rapides sur le circuit super-kart. Ton nom n'y est pas ? T'as toute la semaine pour changer ca.",
+   "hashtags": "#AmigoKarting #MeilleurTemps #Karting #Chrono #Gatineau",
+   "variantes": [
+    "Classement special 'debutants' pour ne pas decourager",
+    "Record du mois avec petit prix pour le no 1"
+   ]
+  },
+  {
+   "titre": "Bats le Boss (ton rival maison)",
+   "cat": "Engagement",
+   "format": "Reel / Story",
+   "mois": [],
+   "objectif": "Engagement",
+   "angle": "Cree un PERSONNAGE recurrent (un employe rapide = 'le Boss'). Les gens viennent affronter quelqu'un de reel : c'est une histoire qui continue, pas un post isole.",
+   "momentideal": "Une fois aux 2 semaines, en story interactive.",
+   "pourquoi": "Un visage recurrent humanise la marque et cree un fil narratif que les abonnes suivent. Le defi pousse a venir en personne.",
+   "legende": "Personne n'a encore battu le temps du Boss cette semaine. Penses-tu pouvoir le faire ? Viens tenter ta chance — le tableau t'attend.",
+   "hashtags": "#AmigoKarting #DefieLeBoss #Karting #Gatineau",
+   "variantes": [
+    "Le Boss reagit en video aux challengers qui s'approchent",
+    "'Le Boss offre une ronde gratuite a qui le bat ce mois-ci'"
+   ],
+   "script": [
+    {
+     "t": "0-3s",
+     "plan": "Le Boss (un employe) croise les bras devant le tableau des temps",
+     "ecran": "Personne n'a battu le Boss...",
+     "voix": "Ca fait deux semaines que personne me bat."
+    },
+    {
+     "t": "3-7s",
+     "plan": "Le Boss en action sur la piste, tres rapide",
+     "ecran": "Son temps : 38,2 s",
+     "voix": "Voici mon temps. Bonne chance."
+    },
+    {
+     "t": "7-12s",
+     "plan": "Des clients qui tentent et echouent de peu",
+     "ecran": "Si proche...",
+     "voix": "(reactions decues des challengers)"
+    },
+    {
+     "t": "12-16s",
+     "plan": "Le Boss sourit a la camera",
+     "ecran": "A TON tour",
+     "voix": "Penses-tu en etre capable ? Viens essayer."
+    },
+    {
+     "t": "16-18s",
+     "plan": "Plan sur le tableau des records",
+     "ecran": "Bats le Boss cette semaine chez Amigo",
+     "voix": "Le tableau t'attend."
+    }
+   ]
+  },
+  {
+   "titre": "Concours : gagne une session pour 2",
+   "cat": "Concours",
+   "format": "Image / Reel",
+   "mois": [],
+   "objectif": "Notoriete",
+   "angle": "La vraie recompense d'un concours, ce n'est pas le lot, c'est les centaines de 'tags' qui exposent ta page a des gens qui ne te connaissent pas encore.",
+   "momentideal": "Debut de semaine, tirage le dimanche pour maximiser la duree d'exposition.",
+   "pourquoi": "Mecanique simple (aimer + taguer + partager) = portee organique maximale pour un cout minime.",
+   "legende": "CONCOURS ! On fait gagner une session pour 2. Pour participer : 1) Aime la page 2) Tague la personne avec qui tu veux courser 3) Partage en story. Tirage dimanche soir !",
+   "hashtags": "#Concours #AmigoKarting #Gatineau #Outaouais #Karting",
+   "variantes": [
+    "Concours 'photo de l'ete' avec vote de la communaute",
+    "Partenariat avec un commerce local pour doubler le lot"
+   ]
+  },
+  {
+   "titre": "7h du matin : les coulisses (ASMR satisfaisant)",
+   "cat": "Coulisses",
+   "format": "Reel / Story",
+   "mois": [],
+   "objectif": "Image de marque",
+   "angle": "Montre le SOIN invisible (verification de chaque kart). Tu reponds a une objection silencieuse des parents ('est-ce securitaire ?') sans jamais avoir a la nommer.",
+   "momentideal": "Un matin de semaine, contenu calme qui tranche dans le fil.",
+   "pourquoi": "Le contenu coulisses est le plus authentique en 2025-2026 et batit la confiance. L'aspect ASMR (sons reels) augmente la retention.",
+   "legende": "7h du matin chez Amigo. Avant que vous arriviez, l'equipe verifie chaque kart, un par un. Le fun, ca se prepare. Voici les coulisses.",
+   "hashtags": "#Coulisses #AmigoKarting #Equipe #Karting #Gatineau",
+   "variantes": [
+    "Gros plans satisfaisants : pneus, demarrage moteur, piste balayee",
+    "'Une journee dans la vie' d'un membre de l'equipe"
+   ],
+   "script": [
+    {
+     "t": "0-3s",
+     "plan": "Gros plan d'une cle qui serre un boulon (son net)",
+     "ecran": "7h du matin chez Amigo...",
+     "voix": "(aucune parole - que des sons ASMR reels)"
+    },
+    {
+     "t": "3-7s",
+     "plan": "Verification du moteur, demarrage",
+     "ecran": "On verifie chaque kart, un par un",
+     "voix": "(vroum du moteur qui demarre)"
+    },
+    {
+     "t": "7-11s",
+     "plan": "Pneus gonfles, piste balayee",
+     "ecran": "",
+     "voix": "(sons satisfaisants, rythme calme)"
+    },
+    {
+     "t": "11-15s",
+     "plan": "Plan large : la piste vide au lever du soleil",
+     "ecran": "...tout est pret pour vous",
+     "voix": "Le fun, ca se prepare."
+    },
+    {
+     "t": "15-17s",
+     "plan": "La premiere voiture de clients qui arrive",
+     "ecran": "Reserve ta sortie",
+     "voix": "On vous attend."
+    }
+   ]
+  },
+  {
+   "titre": "Forfait anniversaire cle en main (zero stress parent)",
+   "cat": "Promotion",
+   "format": "Carrousel",
+   "mois": [],
+   "objectif": "Vente",
+   "angle": "Ne vends pas 'des tours de kart', vends la TRANQUILLITE d'esprit du parent : tout est organise, il n'a rien a gerer. C'est ca qu'il achete vraiment.",
+   "momentideal": "Jeudi/vendredi, quand les parents planifient les fins de semaine.",
+   "pourquoi": "Les fetes d'enfants/ados sont un revenu stable et previsible. Lever la charge mentale du parent fait la difference a l'achat.",
+   "legende": "Une fete d'anniversaire qu'ils vont JAMAIS oublier — et vous, vous n'avez RIEN a organiser. Karting, gateau, plaisir : on s'occupe de tout. Reservez votre date avant qu'elles partent !",
+   "hashtags": "#FeteDanniversaire #AmigoKarting #Gatineau #Karting #Famille",
+   "variantes": [
+    "Carrousel 'avant/pendant/apres' d'une vraie fete",
+    "Temoignage video d'un parent satisfait"
+   ]
+  },
+  {
+   "titre": "La sortie tout-en-un (un kart pour chaque age)",
+   "cat": "Famille",
+   "format": "Carrousel",
+   "mois": [],
+   "objectif": "Reservations",
+   "angle": "Reponds a LA question qui bloque les familles : 'quoi faire avec des enfants d'ages differents ?'. Ta force = kiddy kars + karting + trampolines + mini-golf au meme endroit.",
+   "momentideal": "Fins de semaine et conges, quand les parents cherchent une activite famille.",
+   "pourquoi": "Beaucoup ignorent que tu offres plus que du karting. Montrer la polyvalence elargit ton public au-dela des amateurs de vitesse.",
+   "legende": "Chez Amigo, y'a pas que les grands qui ont du fun ! Kiddy kars pour les petits, trampolines, mini-golf Wacky Putt et karting pour les grands. Une seule sortie, tout le monde content.",
+   "hashtags": "#AmigoKarting #SortieFamille #Gatineau #Outaouais #Famille",
+   "variantes": [
+    "'Itineraire parfait' d'une journee famille chez Amigo",
+    "Mets en vedette les tout-petits sur les kiddy kars"
+   ]
+  },
+  {
+   "titre": "Sondage : simple ou double kart ?",
+   "cat": "Engagement",
+   "format": "Story (sondage)",
+   "mois": [],
+   "objectif": "Engagement",
+   "angle": "Une question binaire ultra-simple = friction zero pour participer. Chaque vote te rend visible aupres de cette personne et nourrit l'algorithme.",
+   "momentideal": "N'importe quand, parfait pour les journees creuses de contenu.",
+   "pourquoi": "Les sondages en story generent enormement d'interactions rapides et signalent ta pertinence a la plateforme.",
+   "legende": "La vraie question : tu es plutot kart SIMPLE (solo, full vitesse) ou DOUBLE (a deux, on partage le fun) ? Vote dans le sondage !",
+   "hashtags": "#AmigoKarting #Sondage #Karting #Gatineau",
+   "variantes": [
+    "'Jour ou soir ?', 'Pluie ou soleil ?', 'Pizza apres la course ?'",
+    "Republie les resultats avec un commentaire amusant"
+   ]
+  },
+  {
+   "titre": "Laisse tes clients vendre a ta place (avis 5 etoiles)",
+   "cat": "Temoignage",
+   "format": "Image (citation)",
+   "mois": [],
+   "objectif": "Image de marque",
+   "angle": "Un avis client honnete convainc 10x plus que ta propre pub. Mets-le en valeur sur un beau visuel : c'est de la preuve sociale gratuite.",
+   "momentideal": "Apres une bonne fin de semaine, quand les avis frais arrivent.",
+   "pourquoi": "La preuve sociale rassure les indecis et raccourcit la decision d'achat.",
+   "legende": "Quand nos clients en parlent mieux que nous... Merci pour ce bel avis ! On a hate de vous revoir sur la piste. Et toi, c'etait comment ta derniere visite ?",
+   "hashtags": "#AmigoKarting #Merci #AvisClient #Gatineau #Karting",
+   "variantes": [
+    "Capture d'avis Google/TripAdvisor sur photo de la piste",
+    "Serie 'avis de la semaine' recurrente"
+   ]
+  },
+  {
+   "titre": "Le party de bureau dont tout le monde parle lundi (B2B)",
+   "cat": "Promotion",
+   "format": "Reel / Image",
+   "mois": [],
+   "objectif": "Vente",
+   "angle": "Cible l'ORGANISATEUR (RH, gerant) avec son vrai probleme : trouver une activite ou tout le monde s'amuse. Un seul groupe = gros panier.",
+   "momentideal": "Sep-oct (planification d'activites d'equipe) et avant les Fetes.",
+   "pourquoi": "Les sorties d'entreprise rapportent gros et remplissent des plages en semaine. Tu te positionnes comme LA solution team-building locale.",
+   "legende": "Un party de bureau dont tout le monde va parler lundi ? Amene ton equipe chez Amigo. Forfaits de groupe, competition amicale et fou rire garantis. Contacte-nous pour reserver !",
+   "hashtags": "#TeamBuilding #AmigoKarting #Gatineau #Outaouais #SortieDeGroupe",
+   "variantes": [
+    "Forfait 'mini-Grand-Prix d'entreprise' avec podium",
+    "Temoignage d'une equipe locale venue chez vous"
+   ]
+  },
+  {
+   "titre": "Serie '1% plus vite' : le truc de pilotage de la semaine",
+   "cat": "Educatif",
+   "format": "Reel / Carrousel",
+   "mois": [],
+   "objectif": "Fidelisation",
+   "angle": "Eduquer, c'est fideliser : si tu rends tes clients meilleurs, ils reviennent pour s'ameliorer ET te voient comme l'expert. Transforme un conseil en SERIE attendue.",
+   "momentideal": "Toutes les semaines, meme jour (cree l'habitude).",
+   "pourquoi": "Le contenu educatif positionne Amigo en expert et donne une raison concrete de revenir tester le conseil.",
+   "legende": "#1 pour aller plus vite : freine en LIGNE DROITE, pas dans la courbe. Entre large, vise la corde, ressors large. Essaie ca a ta prochaine visite et regarde ton chrono baisser !",
+   "hashtags": "#AmigoKarting #ConseilPilotage #Karting #Chrono #Gatineau",
+   "variantes": [
+    "Avant/apres chrono d'un client qui applique le conseil",
+    "'Erreur de debutant #1' a eviter"
+   ]
+  },
+  {
+   "titre": "A quelle vitesse vont nos karts ? (parents ET ados)",
+   "cat": "Educatif",
+   "format": "Carrousel / Reel",
+   "mois": [],
+   "objectif": "Reservations",
+   "angle": "Un seul post qui parle a DEUX audiences : rassure les parents (mini-karts 40 km/h, zero collision) ET excite les amateurs de vitesse (super-karts). Tu leves un frein et tu crees un desir en meme temps.",
+   "momentideal": "Avant les fins de semaine et les conges scolaires.",
+   "pourquoi": "Les chiffres concrets rassurent et impressionnent. Adresser parents + jeunes elargit la conversion.",
+   "legende": "Mini-kart a 40 km/h pour les jeunes (zero risque de collision avec les rapides) OU super-kart haute performance pour les pros de la vitesse ? Chez Amigo, un kart pour chaque niveau. Tu choisis lequel ?",
+   "hashtags": "#AmigoKarting #Vitesse #Karting #Securite #Gatineau",
+   "variantes": [
+    "Comparatif visuel des 3 types de karts",
+    "'A partir de quel age ?' en story FAQ"
+   ]
+  },
+  {
+   "titre": "Coucher de soleil sur la piste eclairee",
+   "cat": "Ambiance",
+   "format": "Photo / Reel",
+   "mois": [],
+   "objectif": "Notoriete",
+   "angle": "Vends l'EMOTION et l'experience nocturne, pas l'activite. Une image d'ambiance forte se grave dans la memoire et devient ton image de marque.",
+   "momentideal": "Publie a l'heure doree, en debut de soiree.",
+   "pourquoi": "Ta piste eclairee est un atout unique pour les soirees. L'emotion visuelle cree le desir de vivre le moment.",
+   "legende": "Il y a quelque chose de magique a courser quand le soleil se couche et que les lumieres de la piste s'allument. La soiree parfaite commence ici. Qui vient vivre ca ce soir ?",
+   "hashtags": "#AmigoKarting #CoucherDeSoleil #Karting #Gatineau #Soiree",
+   "variantes": [
+    "Timelapse jour -> nuit de la piste qui s'allume",
+    "Photo de groupe en contre-jour au coucher de soleil"
+   ]
+  },
+  {
+   "titre": "Defi communaute #AmigoKarting (ta machine a contenu gratuite)",
+   "cat": "UGC",
+   "format": "Image / Story",
+   "mois": [],
+   "objectif": "Communaute",
+   "angle": "Fais produire ton contenu par tes clients. Chaque photo publiee avec ton hashtag, c'est une pub authentique aupres de leur reseau — et toi tu n'as qu'a repartager.",
+   "momentideal": "Lance en debut de saison, repartage chaque semaine.",
+   "pourquoi": "Le contenu genere par les clients coute zero, est plus credible que la pub, et fait rayonner la marque.",
+   "legende": "On veut voir VOS moments chez Amigo ! Publie ta meilleure photo ou video avec #AmigoKarting. On repartage nos preferees chaque semaine. Pret a devenir une vedette ?",
+   "hashtags": "#AmigoKarting #Karting #Gatineau #Outaouais #GoKart",
+   "variantes": [
+    "'Photo de la semaine' mise en vedette avec credit",
+    "Petit prix pour la meilleure video du mois"
+   ]
+  },
+  {
+   "titre": "Promo eclair 48h (pour remplir les creux)",
+   "cat": "Promotion",
+   "format": "Image",
+   "mois": [],
+   "objectif": "Reservations",
+   "angle": "L'urgence (48h) force la decision MAINTENANT. Sors la promo precisement les journees ou tu sais que c'est tranquille — tu remplis sans brader en permanence.",
+   "momentideal": "Debut de semaine ou meteo incertaine, pour combler les plages molles.",
+   "pourquoi": "Une promo a duree limitee cree de l'urgence et lisse l'achalandage sans devaluer ton offre toute l'annee.",
+   "legende": "PROMO ECLAIR ! Pour les 48 prochaines heures seulement : [ton rabais] sur les sessions de karting. Montre cette publication a l'accueil. Apres ca, c'est fini ! Cours-y... avant de courser.",
+   "hashtags": "#PromoEclair #AmigoKarting #Gatineau #Karting #Rabais",
+   "variantes": [
+    "'Happy hour' karting en semaine apres 17h",
+    "Code secret a mentionner a l'accueil"
+   ]
+  },
+  {
+   "titre": "POV : ton tout premier tour (leve la peur)",
+   "cat": "Video",
+   "format": "Reel (audio tendance)",
+   "mois": [],
+   "objectif": "Reservations",
+   "angle": "Vise les gens qui n'ont 'jamais essaye'. Montre le passage du stress au sourire : tu detruis le frein principal ('j'ai peur / je suis pas bon') en 10 secondes.",
+   "momentideal": "Quand un son tendance monte (publie dans les 48h).",
+   "pourquoi": "Le contenu reaction/transformation cree une connexion emotionnelle et convertit les hesitants en visiteurs.",
+   "legende": "POV : c'est ton tout premier tour de kart. Le stress... puis le sourire qui part plus jamais. Bienvenue dans le club, on t'attendait !",
+   "hashtags": "#AmigoKarting #PremierTour #Karting #Reel #Gatineau",
+   "variantes": [
+    "Reaction d'un grand-parent qui essaie pour la 1re fois",
+    "'Mes amis m'ont force a venir et maintenant je suis accro'"
+   ],
+   "script": [
+    {
+     "t": "0-3s",
+     "plan": "Gros plan sur le visage nerveux, avant le depart",
+     "ecran": "Sa premiere fois en kart",
+     "voix": "OK la j'avoue, j'ai un peu peur..."
+    },
+    {
+     "t": "3-6s",
+     "plan": "Feu vert, acceleration soudaine",
+     "ecran": "",
+     "voix": "(cri de surprise) AAAH okayyy !!"
+    },
+    {
+     "t": "6-11s",
+     "plan": "Le sourire qui s'installe, un depassement",
+     "ecran": "",
+     "voix": "OK c'est malade, je comprends la !"
+    },
+    {
+     "t": "11-15s",
+     "plan": "Arrivee, grand sourire, leve les bras",
+     "ecran": "...et maintenant elle est accro",
+     "voix": "On recommence tout de suite !"
+    },
+    {
+     "t": "15-17s",
+     "plan": "Plan final sur la piste",
+     "ecran": "Ta premiere fois t'attend chez Amigo",
+     "voix": "A ton tour."
+    }
+   ]
+  },
+  {
+   "titre": "Glow-up pilote : tour 1 vs tour 20",
+   "cat": "Temoignage",
+   "format": "Reel / Carrousel",
+   "mois": [],
+   "objectif": "Fidelisation",
+   "angle": "Montre la PROGRESSION reelle (chrono a l'appui). Message implicite : 'plus tu reviens, meilleur tu deviens' — donc reviens. La donnee transpondeur rend la preuve indeniable.",
+   "momentideal": "Apres qu'un client regulier a vraiment progresse.",
+   "pourquoi": "Valoriser la progression fidelise les reguliers et inspire les nouveaux a s'investir.",
+   "legende": "Tour 1 vs tour 20. La difference est REELLE ! Plus tu reviens, plus tu t'ameliores — c'est ca la magie du chrono. Montre-nous TA progression en commentaire.",
+   "hashtags": "#AmigoKarting #Progression #Karting #Chrono #Gatineau",
+   "variantes": [
+    "Carte de fidelite 'ameliore ton temps' a tamponner",
+    "Defi 30 jours : bats ton record du debut du mois"
+   ],
+   "script": [
+    {
+     "t": "0-3s",
+     "plan": "Ecran partage : a gauche, le tour 1 maladroit",
+     "ecran": "Tour 1",
+     "voix": "Tout le monde commence ici."
+    },
+    {
+     "t": "3-7s",
+     "plan": "A droite, le tour 20 tout fluide + le chrono qui s'affiche",
+     "ecran": "Tour 20 (-4 secondes !)",
+     "voix": "Et regarde apres quelques visites..."
+    },
+    {
+     "t": "7-12s",
+     "plan": "Montage rapide de la progression",
+     "ecran": "Plus tu reviens, meilleur tu deviens",
+     "voix": "Le chrono, lui, ne ment pas."
+    },
+    {
+     "t": "12-16s",
+     "plan": "Le pilote, fier, devant le tableau",
+     "ecran": "C'est quoi TON record ?",
+     "voix": "Montre-moi ta progression en commentaire !"
+    },
+    {
+     "t": "16-18s",
+     "plan": "Plan final",
+     "ecran": "Viens battre ton temps chez Amigo",
+     "voix": "A toi de jouer."
+    }
+   ]
+  },
+  {
+   "titre": "Fete des Meres : offre-lui de l'adrenaline",
+   "cat": "Marronnier",
+   "format": "Image / Reel",
+   "mois": [
+    5
+   ],
+   "objectif": "Vente",
+   "angle": "Repositionne ton offre en IDEE CADEAU 'experience' au moment ou tout le monde cherche quoi offrir. L'experience bat l'objet, et maman a le droit d'avoir le pied pesant.",
+   "momentideal": "1 a 2 semaines avant la fete des Meres (mi-mai).",
+   "pourquoi": "Les marronniers sont des fenetres d'achat. Te placer comme cadeau capte une intention deja presente.",
+   "legende": "Cette annee, offre-lui de l'adrenaline plutot que des fleurs ! Maman aussi a le droit d'avoir le pied pesant. Venez courser en famille pour la Fete des Meres.",
+   "hashtags": "#FeteDesMeres #AmigoKarting #Gatineau #Karting #Famille",
+   "variantes": [
+    "Carte-cadeau speciale fete des Meres",
+    "Photo mere-enfant sur la piste"
+   ]
+  },
+  {
+   "titre": "Fete des Peres : oublie la cravate",
+   "cat": "Marronnier",
+   "format": "Image / Reel",
+   "mois": [
+    6
+   ],
+   "objectif": "Vente",
+   "angle": "Meme logique cadeau-experience, avec un angle complicite pere-enfant. Le souvenir cree de la valeur emotionnelle (et de la repetition l'annee suivante).",
+   "momentideal": "1 a 2 semaines avant la fete des Peres (mi-juin).",
+   "pourquoi": "Fenetre d'achat cadeau ideale. L'experience partagee marque plus qu'un objet.",
+   "legende": "Cette annee, oublie la cravate. Offre-lui de l'adrenaline ! Une journee de karting chez Amigo, le cadeau de Fete des Peres dont il va se souvenir. Venez courser pere-enfant !",
+   "hashtags": "#FeteDesPeres #AmigoKarting #Gatineau #IdeeCadeau #Karting",
+   "variantes": [
+    "Defi 'pere vs enfant' chronometre",
+    "Forfait duo pere-enfant"
+   ]
+  },
+  {
+   "titre": "Bonne Saint-Jean : la fete nationale sur la piste",
+   "cat": "Marronnier",
+   "format": "Image",
+   "mois": [
+    6
+   ],
+   "objectif": "Reservations",
+   "angle": "Le 24 juin, les gens cherchent activement 'quoi faire' pour le long week-end. Sois la reponse evidente, ancree dans la fierte locale.",
+   "momentideal": "Les jours avant le 24 juin.",
+   "pourquoi": "Longue fin de semaine = pic de recherche d'activites. Capter cette intention remplit la piste.",
+   "legende": "Bonne Saint-Jean ! Quoi de mieux qu'une journee de karting entre chums pour celebrer ? La piste est ouverte, le soleil est la. Rassemble ta gang chez Amigo !",
+   "hashtags": "#AmigoKarting #SaintJean #FeteNationale #Gatineau #Outaouais",
+   "variantes": [
+    "Decor aux couleurs du Quebec sur la piste",
+    "Story 'plan de match du long week-end'"
+   ]
+  },
+  {
+   "titre": "Fete du Canada : zero excuse pour rester sur le divan",
+   "cat": "Marronnier",
+   "format": "Image",
+   "mois": [
+    6,
+    7
+   ],
+   "objectif": "Reservations",
+   "angle": "1er juillet = beaucoup de monde en conge ET de touristes dans la region. Combine fierte du jour ferie et appel a l'action immediat.",
+   "momentideal": "Les 2-3 jours avant le 1er juillet.",
+   "pourquoi": "Long week-end et trafic touristique = forte demande de loisirs a capter.",
+   "legende": "Longue fin de semaine = zero excuse pour rester sur le divan ! La piste est ouverte. Viens bruler de la gomme chez Amigo pour la Fete du Canada.",
+   "hashtags": "#AmigoKarting #FeteDuCanada #Gatineau #Outaouais #Karting",
+   "variantes": [
+    "Forfait famille special long week-end",
+    "Mets en avant l'option soiree (piste eclairee)"
+   ]
+  },
+  {
+   "titre": "Les classes sont FINIES : place a l'ete",
+   "cat": "Saisonnier",
+   "format": "Reel / Image",
+   "mois": [
+    6
+   ],
+   "objectif": "Reservations",
+   "angle": "Capte l'energie du tout premier jour de liberte. Les ados et familles cherchent a marquer le coup : sois leur 'premiere sortie d'ete'.",
+   "momentideal": "Le dernier jour d'ecole et le week-end qui suit (fin juin).",
+   "pourquoi": "La fin des classes libere d'un coup familles et ados, en quete d'activites.",
+   "legende": "DING DING DING ! Les classes sont FINIES ! Premier vrai jour de liberte = premier tour de piste chez Amigo. Qui vient celebrer le debut des vacances ?",
+   "hashtags": "#AmigoKarting #FinDesClasses #Ete #Gatineau #Karting",
+   "variantes": [
+    "Offre 'bulletin = ronde a rabais' (fun, leger)",
+    "Sortie de groupe d'amis pour feter la fin de l'annee"
+   ]
+  },
+  {
+   "titre": "Il fait beau : viens-t'en (post reactif meteo)",
+   "cat": "Promotion",
+   "format": "Story / Image",
+   "mois": [
+    6,
+    7,
+    8
+   ],
+   "objectif": "Reservations",
+   "angle": "Publie EN REACTION a la meteo du jour. Tu captures la decision de derniere minute ('belle journee, on fait quoi ?') au moment exact ou elle se prend.",
+   "momentideal": "Le matin meme d'une belle journee annoncee.",
+   "pourquoi": "Les decisions de sortie spontanees se prennent le jour meme : etre present a ce moment convertit.",
+   "legende": "Belle journee annoncee = direction la piste ! La fenetre parfaite pour quelques tours, c'est MAINTENANT. Pas besoin de reserver, viens faire un tour chez Amigo.",
+   "hashtags": "#AmigoKarting #BeauTemps #Gatineau #Karting #Outaouais",
+   "variantes": [
+    "Version pluie : 'petit gris ? la piste est encore plus epique'",
+    "Story avec la meteo du jour en autocollant"
+   ]
+  },
+  {
+   "titre": "En vacances dans l'Outaouais ? Mets-nous sur ta liste",
+   "cat": "Saisonnier",
+   "format": "Image",
+   "mois": [
+    7,
+    8
+   ],
+   "objectif": "Notoriete",
+   "angle": "Cible les TOURISTES (vacances de la construction). Ils cherchent 'quoi faire dans la region' sans te connaitre : positionne-toi comme attraction incontournable a 5 min d'Ottawa-Gatineau.",
+   "momentideal": "Fin juillet / aout, periode de pointe touristique.",
+   "pourquoi": "Les vacanciers amenent un public neuf et pret a depenser en loisirs.",
+   "legende": "En vacances dans l'Outaouais ? Mets Amigo Karting sur ta liste ! Piste exterieure eclairee, karts pour tous les ages, souvenirs garantis. A deux pas d'Ottawa-Gatineau.",
+   "hashtags": "#AmigoKarting #Vacances #Gatineau #Outaouais #QuoiFaire",
+   "variantes": [
+    "Top 3 'a faire en famille dans l'Outaouais' avec Amigo",
+    "Partenariat avec hotels/campings du coin"
+   ]
+  },
+  {
+   "titre": "Une derniere grosse sortie avant l'ecole",
+   "cat": "Saisonnier",
+   "format": "Reel / Image",
+   "mois": [
+    8,
+    9
+   ],
+   "objectif": "Reservations",
+   "angle": "Joue sur le 'avant que ce soit trop tard'. Fin aout = envie de profiter a fond des derniers beaux jours avant la routine.",
+   "momentideal": "Les 2 dernieres semaines d'aout.",
+   "pourquoi": "La rentree approche : creer un mini-sentiment d'urgence pousse a l'action.",
+   "legende": "L'ecole recommence bientot... Offre-toi (ou offre-leur) une derniere grosse sortie de l'ete ! Un apres-midi chez Amigo avant le retour de la routine. Qui embarque ?",
+   "hashtags": "#AmigoKarting #Rentree #Ete #Gatineau #Karting",
+   "variantes": [
+    "'Derniere chance' en story avec compte a rebours",
+    "Sortie de groupe d'amis avant la separation de la rentree"
+   ]
+  },
+  {
+   "titre": "Compte a rebours : il reste X semaines a la saison",
+   "cat": "Saisonnier",
+   "format": "Image / Story",
+   "mois": [
+    9,
+    10
+   ],
+   "objectif": "Reservations",
+   "angle": "Active la RARETE : la piste ferme mi-novembre. 'Tu ne pourras plus' est un moteur d'action plus fort que 'tu peux'.",
+   "momentideal": "Septembre-octobre, en story chaque semaine avec le compte qui baisse.",
+   "pourquoi": "La fin de saison cree une urgence reelle : personne ne veut manquer sa derniere chance de l'annee.",
+   "legende": "L'ete file... et la saison aussi ! Il ne reste que quelques semaines avant qu'on ferme la piste pour l'hiver. Ne finis pas l'annee avec des regrets : viens faire tes derniers tours !",
+   "hashtags": "#AmigoKarting #DerniereChance #FinDeSaison #Gatineau #Karting",
+   "variantes": [
+    "Story hebdo 'plus que X week-ends'",
+    "Offre 'derniere ronde de l'annee' en novembre"
+   ]
+  },
+  {
+   "titre": "Karting d'automne : les couleurs + l'adrenaline",
+   "cat": "Ambiance",
+   "format": "Photo / Reel",
+   "mois": [
+    9,
+    10
+   ],
+   "objectif": "Notoriete",
+   "angle": "Capitalise sur un decor que tes concurrents interieurs n'ont pas : le feuillage d'automne autour d'une piste EXTERIEURE. Un visuel saisonnier unique et tres partageable.",
+   "momentideal": "Pic des couleurs (fin septembre - mi-octobre).",
+   "pourquoi": "L'automne offre un cadre visuel rare et magnifique qui se distingue dans le fil.",
+   "legende": "Courser entoure des couleurs d'automne ! Y'a pas plus beau decor pour bruler de la gomme. La piste exterieure se met sur son 36. Viens en profiter avant la fermeture !",
+   "hashtags": "#AmigoKarting #Automne #Gatineau #Outaouais #Karting",
+   "variantes": [
+    "Photo aerienne (drone) de la piste entouree de feuillage",
+    "'Le plus beau circuit d'automne de l'Outaouais ?'"
+   ]
+  },
+  {
+   "titre": "Halloween sur la piste (evenement de fin de saison)",
+   "cat": "Marronnier",
+   "format": "Reel / Image",
+   "mois": [
+    10
+   ],
+   "objectif": "Reservations",
+   "angle": "Un EVENEMENT thematique donne une raison forte et datee de venir, juste avant la fermeture. Costumes + ambiance = contenu et bouche-a-oreille.",
+   "momentideal": "2 semaines avant l'Halloween, avec rappel la veille.",
+   "pourquoi": "Un evenement special relance l'achalandage en fin de saison et cree du contenu memorable.",
+   "legende": "Halloween chez Amigo ! Costumes bienvenus, ambiance speciale, frissons garantis (sur la piste, pas juste avec les fantomes). Une des dernieres soirees de la saison — manque pas ca !",
+   "hashtags": "#AmigoKarting #Halloween #Gatineau #Karting #Outaouais",
+   "variantes": [
+    "Concours du meilleur costume sur la piste",
+    "Decor + eclairage special pour les photos"
+   ]
+  },
+  {
+   "titre": "Merci pour la saison (retrospective + communaute)",
+   "cat": "Saisonnier",
+   "format": "Carrousel / Reel",
+   "mois": [
+    11
+   ],
+   "objectif": "Communaute",
+   "angle": "Un bilan chaleureux transforme des clients en COMMUNAUTE. Tu remercies, tu rappelles les bons moments, et tu plantes la graine du retour au printemps.",
+   "momentideal": "A la fermeture (mi-novembre).",
+   "pourquoi": "Cloturer la saison en celebrant la communaute renforce l'attachement et la fidelite a long terme.",
+   "legende": "Wow, quelle saison ! Des milliers de tours, des sourires, des records battus... Merci a chacun de vous d'avoir fait vrombir la piste cette annee. On se revoit au printemps.",
+   "hashtags": "#AmigoKarting #MerciSaison #Gatineau #Karting #Outaouais",
+   "variantes": [
+    "Montage 'best of' des meilleurs moments clients",
+    "Chiffres de la saison (tours, records, sourires)"
+   ]
+  },
+  {
+   "titre": "Le cadeau parfait des Fetes : la carte-cadeau",
+   "cat": "Promotion",
+   "format": "Image",
+   "mois": [
+    11,
+    12
+   ],
+   "objectif": "Vente",
+   "angle": "Genere du revenu PENDANT la fermeture. La carte-cadeau, c'est de l'argent encaisse maintenant pour une experience livree au printemps — et un nouveau client potentiel.",
+   "momentideal": "Mi-novembre a fin decembre (saison des cadeaux).",
+   "pourquoi": "Hors-saison, les cartes-cadeaux maintiennent des rentrees et amenent de nouveaux visiteurs au printemps.",
+   "legende": "A court d'idees cadeaux ? Offre de l'adrenaline ! Une carte-cadeau Amigo Karting, c'est la promesse d'une journee inoubliable au printemps. Disponible des maintenant.",
+   "hashtags": "#AmigoKarting #CarteCadeau #Noel #IdeeCadeau #Gatineau",
+   "variantes": [
+    "Carte-cadeau 'experience' bien emballee en photo",
+    "Offre 'achete 50$, recois 10$ de bonus'"
+   ]
+  },
+  {
+   "titre": "Le saviez-vous : 18 karts en meme temps, chrono F1",
+   "cat": "Educatif",
+   "format": "Image / Reel",
+   "mois": [],
+   "objectif": "Notoriete",
+   "angle": "Un fait CHOC qui cree un effet 'wow' et impose ton autorite technique. Le chiffre concret (18 karts, transpondeurs) te demarque des pistes amateurs.",
+   "momentideal": "En tout temps, parfait pour relancer un fil tranquille.",
+   "pourquoi": "Un fait surprenant capte l'attention et met en valeur la capacite et le serieux de ta piste.",
+   "legende": "Le saviez-vous ? Notre circuit super-kart peut accueillir jusqu'a 18 karts en meme temps, chronometres au transpondeur comme en F1. Imagine le depart... Qui veut etre sur la grille ?",
+   "hashtags": "#AmigoKarting #LeSaviezVous #Karting #Gatineau #F1",
+   "variantes": [
+    "Serie 'le saviez-vous' hebdo sur tes installations",
+    "Video d'un vrai depart a pleine grille"
+   ]
+  },
+  {
+   "titre": "Rencontre l'equipe (les gens suivent des gens)",
+   "cat": "Coulisses",
+   "format": "Image / Reel",
+   "mois": [],
+   "objectif": "Communaute",
+   "angle": "Mets un VISAGE sur la marque. Les abonnes s'attachent a des personnes, pas a un logo : presenter l'equipe cree de la proximite et de la fidelite.",
+   "momentideal": "En debut de saison et quand un nouveau membre arrive.",
+   "pourquoi": "Humaniser la marque batit un lien durable et un sentiment d'appartenance.",
+   "legende": "Rencontre [Prenom] ! Ca fait [X] ans qu'il/elle s'assure que ton experience chez Amigo soit parfaite. Son conseil de pilotage prefere ? [son conseil]. Dis-lui bonjour a ta prochaine visite !",
+   "hashtags": "#AmigoKarting #Equipe #Coulisses #Gatineau #Karting",
+   "variantes": [
+    "'2 verites 1 mensonge' avec un membre de l'equipe",
+    "Le conseil prefere de chaque employe"
+   ]
+  }
+ ]
+}
+</script>
+
+<script>
+(function(){
+  const lib = JSON.parse(document.getElementById('lib').textContent);
+  const idees = lib.idees.slice();
+  // idées personnelles ajoutées par l'utilisateur (gardées sur cet ordinateur)
+  const PERSO='amigoKarting_perso';
+  function chargerArr(k){ try{ return JSON.parse(localStorage.getItem(k)||'[]')||[]; }catch(e){ return []; } }
+  let perso = chargerArr(PERSO);
+  function sauverPerso(){ try{ localStorage.setItem(PERSO, JSON.stringify(perso)); }catch(e){} }
+  perso.forEach(function(p){ if(p && p.titre && !idees.some(function(i){return i.titre===p.titre;})) idees.push(p); });
+  // actualites trouvees DIRECTEMENT par le navigateur (sans Python) - gardees sur cet ordinateur
+  const ACTU='amigoKarting_actu', HISTN='amigoKarting_histNews';
+  let actu = chargerArr(ACTU);
+  function sauverActu(){ try{ localStorage.setItem(ACTU, JSON.stringify(actu)); }catch(e){} }
+  let histNews={}; try{ histNews=JSON.parse(localStorage.getItem(HISTN)||'{}')||{}; }catch(e){ histNews={}; }
+  function sauverHistNews(){ try{ localStorage.setItem(HISTN, JSON.stringify(histNews)); }catch(e){} }
+  function appliquerActu(){
+    for(var i=idees.length-1;i>=0;i--){ if(String(idees[i].titre).indexOf('À chaud :')===0) idees.splice(i,1); }
+    actu.forEach(function(a){ if(a && a.titre && !idees.some(function(x){return x.titre===a.titre;})) idees.push(a); });
+  }
+  appliquerActu();
+  const EX = lib.exemples;
+  const MOIS_FR = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+  const moisActuel = (new Date().getMonth()) + 1; // 1-12
+  const SAISON_OUVERTE = moisActuel >= 4 && moisActuel <= 11;
+
+  document.getElementById('saison').textContent = SAISON_OUVERTE
+    ? "📅 Nous sommes en " + MOIS_FR[moisActuel-1] + " — saison ouverte. Les idées du moment sont mises en avant."
+    : "📅 Nous sommes en " + MOIS_FR[moisActuel-1] + " — hors-saison. Idées de teasing et de cartes-cadeaux mises en avant.";
+
+  // ----- Mémoire (favoris + supprimées), gardée sur cet ordinateur -----
+  const LK='amigoKarting_likes', DK='amigoKarting_deleted', VK='amigoKarting_vues';
+  function charger(k){ try{ return new Set(JSON.parse(localStorage.getItem(k)||'[]')); }catch(e){ return new Set(); } }
+  function sauver(){ try{ localStorage.setItem(LK,JSON.stringify(Array.from(likes)));
+                          localStorage.setItem(DK,JSON.stringify(Array.from(deleted))); }catch(e){} }
+  function sauverVues(){ try{ localStorage.setItem(VK,JSON.stringify(Array.from(vues))); }catch(e){} }
+  let likes = charger(LK);      // titres aimés
+  let deleted = charger(DK);    // titres supprimés
+  let vues = charger(VK);       // titres déjà montrés par "Générer" (anti-répétition)
+  // on oublie les titres qui n'existent plus (ex. vieilles actualités remplacées)
+  vues = new Set(Array.from(vues).filter(function(t){ return idees.some(function(i){ return i.titre===t; }); }));
+
+  // ----- Calendrier de publication + statut "publié" -----
+  const PLAN='amigoKarting_plan', PUB='amigoKarting_publie';
+  function chargerObj(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}')||{}; }catch(e){ return {}; } }
+  let plan = chargerObj(PLAN);     // { titre: 'AAAA-MM-JJ' }
+  let publie = charger(PUB);        // Set des titres déjà publiés
+  function sauverPlan(){ try{ localStorage.setItem(PLAN, JSON.stringify(plan)); }catch(e){} }
+  function sauverPublie(){ try{ localStorage.setItem(PUB, JSON.stringify(Array.from(publie))); }catch(e){} }
+  Object.keys(plan).forEach(function(t){ if(!idees.some(function(i){return i.titre===t;})) delete plan[t]; });
+  publie = new Set(Array.from(publie).filter(function(t){ return idees.some(function(i){return i.titre===t;}); }));
+
+  // ----- Groupes (classer les idées ensemble) -----
+  const GK='amigoKarting_groupes';
+  function chargerGroupes(){ try{ return JSON.parse(localStorage.getItem(GK)||'{}')||{}; }catch(e){ return {}; } }
+  function sauverGroupes(){ try{ localStorage.setItem(GK, JSON.stringify(groupes)); }catch(e){} }
+  let groupes = chargerGroupes();
+  // on oublie les titres disparus dans chaque groupe
+  Object.keys(groupes).forEach(function(n){
+    groupes[n] = (groupes[n]||[]).filter(function(t){ return idees.some(function(i){ return i.titre===t; }); });
+  });
+  function groupesDe(titre){ return Object.keys(groupes).filter(function(n){ return groupes[n].indexOf(titre)!==-1; }).sort(); }
+  function creerGroupe(nom){ if(!groupes[nom]) groupes[nom]=[]; sauverGroupes(); }
+  function supprimerGroupe(nom){ delete groupes[nom]; if(vue.type==='groupe'&&vue.val===nom) vue={type:'favoris'}; sauverGroupes(); }
+  function renommerGroupe(o,n){ if(!n||n===o) return; if(!groupes[n]) groupes[n]=[];
+    groupes[o].forEach(function(t){ if(groupes[n].indexOf(t)===-1) groupes[n].push(t); });
+    delete groupes[o]; if(vue.type==='groupe'&&vue.val===o) vue={type:'groupe',val:n}; sauverGroupes(); }
+  function toggleIdeeGroupe(titre,nom){ if(!groupes[nom]) groupes[nom]=[];
+    const i=groupes[nom].indexOf(titre); if(i===-1) groupes[nom].push(titre); else groupes[nom].splice(i,1); sauverGroupes(); }
+
+  // ----- État de l'affichage -----
+  let vue = {type:'moment'};        // 'moment' | 'cat' | 'search' | 'favoris' | 'groupe'
+  let selectionMode = false;
+  let selection = new Set();         // titres cochés
+  let lotCourant = [];               // les idées tirées pour la vue "du moment"
+
+  function exemplePour(it){
+    if(it.exemple_url) return {url:it.exemple_url, label:it.exemple_label||'Voir la source'};
+    return EX[it.cat] || EX["Saisonnier"];
+  }
+  function estDuMoment(it){
+    if(!it.mois || it.mois.length === 0) return false;
+    return it.mois.indexOf(moisActuel) !== -1;
+  }
+  function eligibleMaintenant(it){
+    if(!it.mois || it.mois.length === 0) return true;
+    if(estDuMoment(it)) return true;
+    const offSeason = it.mois.every(m => m===12||m===1||m===2||m===3);
+    return SAISON_OUVERTE ? !offSeason : offSeason;
+  }
+  function melange(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const t=a[i]; a[i]=a[j]; a[j]=t; }
+    return a;
+  }
+
+  // ----- Intelligence : l'app apprend de tes favoris / groupes / suppressions -----
+  function formatType(it){
+    const f=(it.format||'').toLowerCase();
+    if(/carrousel|carousel/.test(f)) return 'carrousel';
+    if(/story|sondage/.test(f)) return 'story';
+    if(/live|direct/.test(f)) return 'live';
+    if(/image|photo|affiche/.test(f)) return 'image';
+    if(/reel|vid|tiktok|short|réact|react|pov/.test(f)) return 'video';
+    return 'publication';
+  }
+  function prefs(){
+    // Goûts déduits : +1 par favori, +0.5 par idée classée en groupe, -1 par suppression.
+    const cats={}, formats={};
+    function add(t, w){ const it=idees.find(function(i){ return i.titre===t; }); if(!it) return;
+      cats[it.cat]=(cats[it.cat]||0)+w; const ft=formatType(it); formats[ft]=(formats[ft]||0)+w; }
+    likes.forEach(function(t){ add(t, 1); });
+    Object.keys(groupes).forEach(function(g){ groupes[g].forEach(function(t){ add(t, 0.5); }); });
+    deleted.forEach(function(t){ add(t, -1); });
+    return {cats:cats, formats:formats};
+  }
+  function scoreIdee(it, P){
+    P = P || prefs();
+    let s = 1;
+    if(estDuMoment(it)) s += 3;                       // colle au mois en cours
+    if(it.cat==='Actualite') s += 1;                  // l'actu, c'est chaud
+    s += (P.cats[it.cat]||0) * 1.5;                   // tes catégories préférées
+    s += (P.formats[formatType(it)]||0) * 1.0;        // tes formats préférés
+    return s;
+  }
+
+  let cycleRecommence = false;
+  function genererLot(n){
+    n = n || 9;
+    cycleRecommence = false;
+    const P = prefs();
+    const pool = idees.filter(it => eligibleMaintenant(it) && !deleted.has(it.titre));
+    let dispo = pool.filter(it => !vues.has(it.titre));        // pas encore montrées
+    if(dispo.length < n){                 // presque tout vu -> on recommence un tour
+      vues.clear();
+      dispo = pool.slice();
+      cycleRecommence = true;
+    }
+    // tri INTELLIGENT par score, puis variété : on pioche dans le haut du panier
+    dispo = dispo.map(function(it){ return {it:it, s:scoreIdee(it,P)}; })
+                 .sort(function(a,b){ return b.s - a.s; })
+                 .map(function(x){ return x.it; });
+    const haut = dispo.slice(0, Math.max(n*3, n));
+    let lot = melange(haut).slice(0, n);
+    if(lot.length < n){                   // sécurité si le pool est plus petit que n
+      const vusLot = new Set(lot.map(x=>x.titre));
+      lot = lot.concat(melange(pool.filter(it=>!vusLot.has(it.titre)))).slice(0,n);
+    }
+    lot.forEach(it => vues.add(it.titre));
+    sauverVues();
+    return lot;
+  }
+
+  function esc(s){ const d=document.createElement('div'); d.textContent = s==null?'':s; return d.innerHTML; }
+
+  // ----- Actions -----
+  function toggleLike(it, btn){
+    if(likes.has(it.titre)) likes.delete(it.titre); else likes.add(it.titre);
+    sauver();
+    if(btn) btn.textContent = likes.has(it.titre) ? '❤️' : '🤍';
+    majBarres();
+    if(vue.type==='favoris') render();
+  }
+  function toggleSelect(it, div, coche){
+    if(coche){ selection.add(it.titre); div.classList.add('selected'); }
+    else { selection.delete(it.titre); div.classList.remove('selected'); }
+    majBarres();
+  }
+  function supprimerUne(it){
+    deleted.add(it.titre); selection.delete(it.titre); likes.delete(it.titre);
+    sauver(); render();
+  }
+
+  function construireChips(it){
+    const noms = groupesDe(it.titre);
+    if(noms.length===0) return null;
+    const wrap = document.createElement('div'); wrap.className='grp-chips';
+    noms.forEach(function(nom){
+      const c=document.createElement('span'); c.className='grp-chip';
+      c.appendChild(document.createTextNode('📁 '+nom+' '));
+      const x=document.createElement('button'); x.textContent='✕'; x.title='Retirer de ce groupe';
+      x.onclick=function(e){ e.stopPropagation(); toggleIdeeGroupe(it.titre, nom); rafraichirCarte(it, wrap.parentNode); };
+      c.appendChild(x); wrap.appendChild(c);
+    });
+    return wrap;
+  }
+  function rafraichirCarte(it, div){
+    if(!div) return;
+    const old = div.querySelector('.grp-chips'); if(old) old.remove();
+    const neu = construireChips(it); if(neu) div.insertBefore(neu, div.querySelector('.actions'));
+  }
+  function fermerPop(){ const p=document.getElementById('pop-actif'); if(p) p.remove(); }
+  function ouvrirPop(it, div){
+    fermerPop();
+    const pop=document.createElement('div'); pop.className='pop'; pop.id='pop-actif';
+    pop.onclick=function(e){ e.stopPropagation(); };
+    const noms=Object.keys(groupes).sort();
+    if(noms.length===0){
+      const v=document.createElement('div'); v.className='pop-vide'; v.textContent='Aucun groupe encore. Crée-en un :'; pop.appendChild(v);
+    }
+    noms.forEach(function(nom){
+      const lab=document.createElement('label');
+      const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=(groupes[nom].indexOf(it.titre)!==-1);
+      cb.onclick=function(e){ e.stopPropagation(); toggleIdeeGroupe(it.titre, nom); rafraichirCarte(it, div); };
+      lab.appendChild(cb); lab.appendChild(document.createTextNode(' 📁 '+nom));
+      pop.appendChild(lab);
+    });
+    const nw=document.createElement('div'); nw.className='pop-new';
+    const inp=document.createElement('input'); inp.placeholder='Nouveau groupe…'; inp.onclick=function(e){ e.stopPropagation(); };
+    const ok=document.createElement('button'); ok.textContent='Créer';
+    const creer=function(){ const v=inp.value.trim(); if(!v) return; creerGroupe(v); toggleIdeeGroupe(it.titre, v); rafraichirCarte(it, div); ouvrirPop(it, div); };
+    ok.onclick=function(e){ e.stopPropagation(); creer(); };
+    inp.onkeydown=function(e){ if(e.key==='Enter'){ e.stopPropagation(); creer(); } };
+    nw.appendChild(inp); nw.appendChild(ok); pop.appendChild(nw);
+    div.appendChild(pop);
+  }
+
+  // ===== RECETTES "Comment la réaliser" (contenu concret, prêt à exécuter) =====
+  const ASTUCE3SEC = "Les 3 premières secondes décident de tout (elles font 80% du visionnage). Mets l'action ou la phrase-choc dès la seconde 0 — jamais de logo/intro au début.";
+  const CTA_SAVE = "Termine par « Enregistre 📌 cette idée » et « Tag la personne avec qui tu veux venir ». Un enregistrement vaut 2 à 3× plus qu'un j'aime pour l'algorithme.";
+  const SON_TENDANCE = "Prends un son qui tend du moment (onglet « tendances » dans Reels/TikTok) et publie dans les 48h pendant qu'il monte. Sinon, garde le vrai son du moteur.";
+
+  function recetteVideoPOV(){ return {
+    type:"Vidéo POV (Reel / TikTok / Short), vertical 9:16",
+    duree:"15 à 25 secondes",
+    accroche:"Plan embarqué plein écran dès la 1re seconde : le kart qui accélère, moteur fort. Texte à l'écran : « POV : ton vendredi soir 🏁 » (7 mots max).",
+    etapes:[
+      "Fixe un téléphone ou une GoPro sur le kart (arceau/volant), BIEN serré. Filme en 60 i/s si possible.",
+      "Capture un tour complet de la piste éclairée — vise l'heure dorée ou la nuit pour les lumières.",
+      "Garde 3 moments : le départ qui accélère, une belle courbe, la ligne d'arrivée.",
+      "Montage serré, coupes franches. AUCUN fondu dans les 5 premières secondes.",
+      "Boucle la fin sur le début pour que la vidéo se relance toute seule."
+    ],
+    texte_ecran:["0-3 s : « POV : ton vendredi soir 🏁 »","Milieu : « 1,1 km de piste éclairée »","Fin : « À 5 min d'Ottawa-Gatineau »"],
+    son:SON_TENDANCE,
+    cta:CTA_SAVE,
+    astuce:ASTUCE3SEC+" Le plan embarqué EST l'accroche : pas besoin de parler.",
+    materiel:"Un téléphone (ou GoPro) + un support/collier de serrage. C'est tout."
+  }; }
+  function recetteVideoReaction(){ return {
+    type:"Vidéo réaction (Reel / TikTok), vertical 9:16",
+    duree:"12 à 20 secondes",
+    accroche:"Gros plan sur le visage d'un débutant AVANT le départ (stress/nervosité). Texte : « Sa première fois en kart… » (≤7 mots).",
+    etapes:[
+      "Filme la personne juste avant (petit stress, sourire nerveux) — 2-3 secondes.",
+      "Coupe direct sur l'action : départ, accélération, sa vraie réaction (cri, rire).",
+      "Finis sur le gros sourire à l'arrivée — c'est le « payoff » émotionnel.",
+      "Garde tout AUTHENTIQUE : les vraies réactions valent mieux qu'un montage parfait."
+    ],
+    texte_ecran:["Début : « Sa première fois en kart 😬 »","Fin : « …et maintenant elle est accro 😁 »"],
+    son:"Un son tendance « émotion/glow-up » OU le son réel. "+SON_TENDANCE,
+    cta:CTA_SAVE+" Demande : « C'était quoi TA première fois ? » pour faire commenter.",
+    astuce:"Le contraste avant/après (transformation) déclenche la curiosité et fait regarder jusqu'au bout.",
+    materiel:"Un téléphone. Filme à la verticale, plein cadre sur le visage."
+  }; }
+  function recetteVideoMarioKart(){ return {
+    type:"Vidéo tendance « Mario Kart en vrai » (Reel / TikTok), 9:16",
+    duree:"15 à 25 secondes",
+    accroche:"Écran partagé : 1 seconde du jeu Mario Kart, puis coupe sur ta vraie piste au même angle. Texte : « Mario Kart… mais en VRAI 🍄 ».",
+    etapes:[
+      "Filme un départ de plusieurs karts côte à côte (l'effet « grille de départ »).",
+      "Ajoute un gag d'objet : quelqu'un brandit une peau de banane avant un virage.",
+      "Montre un dépassement serré = le moment fort.",
+      "Termine sur le vainqueur qui lève les bras."
+    ],
+    texte_ecran:["0-3 s : « Mario Kart… mais en VRAI 🍄🏁 »","« Qui est Luigi ? Qui est Bowser ? »"],
+    son:"Le thème de Mario Kart est souvent dispo dans la bibliothèque audio — sinon un son de course tendance. "+SON_TENDANCE,
+    cta:"« Tag ta gang et dites qui est qui ! » + "+CTA_SAVE,
+    astuce:"Surfer sur une référence connue (nostalgie) = portée maximale. Reste léger et drôle.",
+    materiel:"Un téléphone + (optionnel) un accessoire rigolo (banane, carapace en carton)."
+  }; }
+  function recetteVideoCoulisses(){ return {
+    type:"Vidéo coulisses / ASMR (Reel / TikTok), 9:16",
+    duree:"15 à 30 secondes",
+    accroche:"Plan satisfaisant en gros plan dès le début : la clé qui serre un boulon, le chiffon sur le kart. Texte : « 7 h du matin chez Amigo… ».",
+    etapes:[
+      "Filme 4-5 gestes de préparation en gros plan : vérifier un moteur, gonfler un pneu, aligner les karts.",
+      "Soigne le son réel (cliquetis, moteur qui démarre) = effet ASMR satisfaisant.",
+      "Finis sur la piste prête, vide, au lever du soleil.",
+      "Rythme calme mais coupes nettes."
+    ],
+    texte_ecran:["Début : « Avant que vous arriviez… »","Fin : « …tout est prêt pour vous 🏁 »"],
+    son:"Garde surtout le son réel (ASMR). Une musique douce tendance en fond léger. "+SON_TENDANCE,
+    cta:"« Ça donne envie, non ? Réserve ta prochaine sortie 👇 » + "+CTA_SAVE,
+    astuce:"Les coulisses humanisent la marque et créent de la confiance — montre l'équipe et le soin apporté.",
+    materiel:"Un téléphone. Mets-toi proche pour les gros plans."
+  }; }
+  function recetteVideoChrono(){ return {
+    type:"Vidéo classement / chrono (Reel / TikTok), 9:16",
+    duree:"12 à 20 secondes",
+    accroche:"Compte à rebours plein écran « TOP 3 de la semaine 🏆 » avec un son de tension, dès la seconde 0.",
+    etapes:[
+      "Montre l'écran du chrono (transpondeurs) avec les temps qui défilent.",
+      "Révèle les positions de la 3e à la 1re, une à la fois, avec suspense.",
+      "Montre le/la gagnant(e) en action sur la piste.",
+      "Affiche le meilleur temps en gros à la fin."
+    ],
+    texte_ecran:["0-3 s : « TOP 3 de la semaine 🏆 »","Fin : « Tu peux battre ça ? »"],
+    son:"Un son « drumroll / tension » tendance. "+SON_TENDANCE,
+    cta:"« Viens battre ce temps cette semaine » + « Tag le rival que tu veux dépasser ». "+CTA_SAVE,
+    astuce:"La compétition fait revenir les gens : publie un classement CHAQUE semaine, ça devient un rendez-vous.",
+    materiel:"Un téléphone + une photo/vidéo de l'écran de chronométrage."
+  }; }
+  function recetteVideoGenerique(it){ return {
+    type:"Vidéo (Reel / TikTok / Short), vertical 9:16",
+    duree:"15 à 30 secondes",
+    accroche:"Commence par l'image la plus forte de l'idée + une phrase-choc à l'écran (7 mots max). Inspire-toi de ta légende.",
+    etapes:[
+      "Plan 1 (0-3 s) : l'action ou l'émotion la plus forte, tout de suite.",
+      "Plan 2-3 : montre le « pourquoi » de l'idée (le détail qui donne envie).",
+      "Dernier plan : l'appel à l'action + un plan qui boucle sur le début.",
+      "Montage vertical, coupes franches, sous-titres gros et lisibles."
+    ],
+    texte_ecran:["1re ligne ≤ 7 mots, bien grosse","Garde 2-3 textes courts max"],
+    son:SON_TENDANCE,
+    cta:CTA_SAVE,
+    astuce:ASTUCE3SEC,
+    materiel:"Un téléphone à la verticale. Lumière naturelle ou piste éclairée."
+  }; }
+  function recetteCarrousel(it){ return {
+    type:"Carrousel (plusieurs images à faire défiler) — Instagram/Facebook",
+    duree:"3 à 6 images",
+    accroche:"Image 1 = la couverture : une phrase qui accroche + « → glisse ». C'est elle qui donne envie de swiper.",
+    etapes:[
+      "Image 1 : titre accrocheur (ex. le titre de l'idée) + flèche « glisse → ».",
+      "Images 2 à 4 : une info / un visuel fort par image (pas de pavé de texte).",
+      "Dernière image : l'appel à l'action clair (réserver, commenter, enregistrer).",
+      "Garde un style cohérent : mêmes couleurs (rouge/noir Amigo), même police."
+    ],
+    texte_ecran:["Couverture : 1 phrase + « → »","1 idée par image, gros texte"],
+    son:null,
+    cta:"« Enregistre 📌 ce carrousel » (les carrousels génèrent beaucoup d'enregistrements) + une action claire en dernière image.",
+    astuce:"Le carrousel garde les gens plus longtemps (ils swipent) → l'algorithme le pousse plus. Mets la meilleure image en couverture.",
+    materiel:"Canva (gratuit) pour assembler les images, ou l'éditeur d'Instagram."
+  }; }
+  function recetteStory(it){ return {
+    type:"Story interactive (Instagram/Facebook) — 24 h",
+    duree:"1 à 3 stories",
+    accroche:"Une image/vidéo simple + un autocollant interactif (sondage, question, curseur) bien visible.",
+    etapes:[
+      "Prends une photo/vidéo rapide liée à l'idée (pas besoin que ce soit parfait).",
+      "Ajoute l'autocollant « Sondage » ou « Questions » avec une question simple.",
+      "Réponds aux gens qui participent (ça booste la portée).",
+      "Republie les meilleures réponses dans une story suivante."
+    ],
+    texte_ecran:["Une question courte et claire","Ex. « Simple ou double ? 🤔 »"],
+    son:"Un son léger en fond (optionnel).",
+    cta:"« Vote 👆 » / « Réponds-moi 👇 » — l'objectif est de faire INTERAGIR, pas de vendre.",
+    astuce:"Les stories avec sondage/question font énormément réagir et te rendent visible auprès de tes abonnés.",
+    materiel:"Juste ton téléphone et l'appli Instagram/Facebook."
+  }; }
+  function recetteImage(it){ return {
+    type:"Publication photo (Instagram/Facebook)",
+    duree:"1 image soignée",
+    accroche:"Une photo nette et lumineuse qui raconte l'idée d'un coup d'œil (action, sourire, ambiance).",
+    etapes:[
+      "Photographie à la verticale, en pleine lumière (heure dorée = magique sur la piste éclairée).",
+      "Cadre simple : un sujet clair, pas trop chargé.",
+      "Ajoute un petit texte sur l'image si besoin (le titre de l'idée).",
+      "Mets ta légende prête + les hashtags."
+    ],
+    texte_ecran:["Optionnel : 1 phrase courte sur l'image"],
+    son:null,
+    cta:"Pose une question dans la légende pour faire commenter + « Enregistre 📌 ».",
+    astuce:"Une vraie photo authentique (clients qui s'amusent) performe mieux qu'une image trop « pub ».",
+    materiel:"Ton téléphone. Nettoie l'objectif avant — ça change tout."
+  }; }
+  function recetteLive(it){ return {
+    type:"Direct (Live) Facebook/Instagram",
+    duree:"10 à 20 minutes",
+    accroche:"Annonce le live 1 h avant en story. Démarre avec de l'énergie : « On est en DIRECT de la piste ! ».",
+    etapes:[
+      "Montre la piste / une course en temps réel.",
+      "Salue les gens par leur nom quand ils arrivent (les lives sont 10× plus commentés).",
+      "Lance un mini-défi ou un tirage pour ceux qui regardent.",
+      "Rappelle l'info pratique (horaire, réservation) à la fin."
+    ],
+    texte_ecran:null,
+    son:null,
+    cta:"« Commente ‘MOI' pour participer au tirage » + dis où réserver.",
+    astuce:"Les directs sont énormément poussés et créent un lien vrai. Pas besoin que ce soit parfait — c'est le but.",
+    materiel:"Un téléphone bien chargé + une connexion stable."
+  }; }
+  function recettePublication(it){ return {
+    type:"Publication texte + image (Facebook/Instagram)",
+    duree:"1 publication",
+    accroche:"1re ligne = une accroche qui donne envie de cliquer « voir plus » (question, chiffre, promesse).",
+    etapes:[
+      "Écris l'accroche en 1re ligne (c'est tout ce qu'on voit avant « voir plus »).",
+      "Développe en 2-3 phrases courtes, faciles à lire.",
+      "Termine par une question ou un appel à l'action.",
+      "Ajoute une belle image et tes hashtags."
+    ],
+    texte_ecran:null,
+    son:null,
+    cta:"Finis par une question pour faire commenter + invite à enregistrer/partager.",
+    astuce:"Sur Facebook, pose une vraie question : les commentaires font remonter ta publication.",
+    materiel:"Ta légende prête (bouton « Copier ») + une image."
+  }; }
+
+  function recettePour(it){
+    if(it.recette) return it.recette;                 // recette écrite à la main = prioritaire
+    const f=(it.format||'').toLowerCase();
+    const t=(it.titre+' '+it.legende+' '+it.cat).toLowerCase();
+    if(/reel|vid|tiktok|short|réact|react|pov/.test(f) || /\bpov\b/.test(t)){
+      if(/mario kart/.test(t)) return recetteVideoMarioKart();
+      if(/premier tour|première fois|premiere fois|réaction|reaction|débutant|debutant/.test(t)) return recetteVideoReaction();
+      if(/pov|tour de piste|caméra|camera|embarqu|onboard/.test(t)) return recetteVideoPOV();
+      if(/coulisse|équipe|equipe|prépar|prepar|behind|à neuf|a neuf/.test(t)) return recetteVideoCoulisses();
+      if(/classement|meilleur temps|chrono|record|top 10|top 3/.test(t)) return recetteVideoChrono();
+      return recetteVideoGenerique(it);
+    }
+    if(/carrousel|carousel/.test(f)) return recetteCarrousel(it);
+    if(/story|sondage/.test(f)) return recetteStory(it);
+    if(/live|direct/.test(f)) return recetteLive(it);
+    if(/image|photo|affiche/.test(f)) return recetteImage(it);
+    return recettePublication(it);
+  }
+
+  function recetteHTML(it){
+    const r=recettePour(it);
+    const det=document.createElement('details'); det.className='recette';
+    det.addEventListener('click', function(e){ e.stopPropagation(); }); // ne pas cocher la carte en sélection
+    const sum=document.createElement('summary'); sum.textContent='🎬 Comment la réaliser (recette complète)';
+    det.appendChild(sum);
+    const body=document.createElement('div'); body.className='recette-corps';
+    function bloc(label, val){
+      if(val==null) return;
+      const d=document.createElement('div'); d.className='recette-bloc';
+      const h=document.createElement('div'); h.className='recette-label'; h.textContent=label; d.appendChild(h);
+      if(Array.isArray(val)){
+        const ul=document.createElement('ul');
+        val.forEach(function(x){ const li=document.createElement('li'); li.textContent=x; ul.appendChild(li); });
+        d.appendChild(ul);
+      } else { const p=document.createElement('div'); p.textContent=val; d.appendChild(p); }
+      body.appendChild(d);
+    }
+    bloc('🎬 Format', r.type);
+    bloc('⏱️ Durée', r.duree);
+    bloc('🎯 Accroche (les 3 premières secondes)', r.accroche);
+    bloc('📋 Étapes', r.etapes);
+    bloc("✍️ Texte à l'écran", r.texte_ecran);
+    bloc('🎵 Son / musique', r.son);
+    bloc("📣 Appel à l'action", r.cta);
+    bloc('💡 Astuce de pro', r.astuce);
+    bloc('🧰 Matériel', r.materiel);
+    if(it.variantes && it.variantes.length) bloc('🔀 Variantes à tester', it.variantes);
+    det.appendChild(body);
+    return det;
+  }
+
+  // Script/plan detaille pour CHAQUE idee : ecrit a la main (it.script) sinon genere selon le format.
+  function scriptPour(it){
+    if(it.script && it.script.length) return it.script;
+    const ft = formatType(it);
+    const acc = ((it.legende||'').split(/[.!?\n]/)[0] || it.titre || '').trim().slice(0,70);
+    const cta = "Enregistre 📌 et tag la personne avec qui tu veux venir.";
+    const t40 = (it.titre||'').slice(0,42);
+    if(ft==='video'){
+      return [
+        {t:"0-3s",plan:"L'image la plus forte de l'idee, plein ecran (9:16)",ecran:t40,voix:"(accroche-choc : "+acc+")"},
+        {t:"3-8s",plan:"Montre le coeur de l'idee (le detail qui donne envie)",ecran:"",voix:"(developpe pourquoi c'est cool)"},
+        {t:"8-13s",plan:"Un moment fort ou une vraie reaction",ecran:"",voix:"(le punch / l'emotion)"},
+        {t:"13-17s",plan:"Plan qui appelle a l'action + boucle sur le debut",ecran:"Chez Amigo Karting, Gatineau",voix:cta}
+      ];
+    }
+    if(ft==='carrousel'){
+      return [
+        {t:"Image 1",plan:"Couverture : la phrase qui accroche + « glisse → »",ecran:t40,voix:""},
+        {t:"Image 2",plan:"1er point cle (1 idee, gros texte)",ecran:"Un argument fort",voix:""},
+        {t:"Image 3",plan:"2e point cle / preuve",ecran:"Un autre argument",voix:""},
+        {t:"Image 4",plan:"Appel a l'action clair",ecran:"Reserve / commente / enregistre",voix:""}
+      ];
+    }
+    if(ft==='story'){
+      return [
+        {t:"Story 1",plan:"Photo ou courte video liee a l'idee",ecran:acc,voix:""},
+        {t:"Story 2",plan:"Autocollant interactif (sondage / question)",ecran:"Pose ta question ici",voix:""},
+        {t:"Story 3",plan:"Republie les reponses / remercie",ecran:"Merci d'avoir participe !",voix:""}
+      ];
+    }
+    if(ft==='live'){
+      return [
+        {t:"Avant",plan:"Annonce le direct 1h avant, en story",ecran:"En direct a 19h !",voix:"Rejoins-nous tantot en direct de la piste !"},
+        {t:"Debut",plan:"Ouverture energique",ecran:"",voix:"On est EN DIRECT de chez Amigo !"},
+        {t:"Coeur",plan:"Montre l'action, salue les gens par leur nom",ecran:"",voix:"Salut [nom] ! Commente 'MOI' pour participer au tirage."},
+        {t:"Fin",plan:"Rappelle l'info pratique + tirage",ecran:"Reserve ta sortie 👇",voix:"Merci d'avoir suivi, on se voit sur la piste !"}
+      ];
+    }
+    return [
+      {t:"Plan",plan:"Une photo nette et lumineuse qui raconte l'idee d'un coup d'oeil",ecran:t40,voix:""},
+      {t:"Texte",plan:"Legende : accroche en 1re ligne, puis le message",ecran:acc,voix:""},
+      {t:"Fin",plan:"Termine par une question + appel a l'action",ecran:"",voix:cta}
+    ];
+  }
+  function scriptHTML(it){
+    const scenes = scriptPour(it);
+    if(!scenes || !scenes.length) return null;
+    const det=document.createElement('details'); det.className='recette';
+    det.addEventListener('click', function(e){ e.stopPropagation(); });
+    const sum=document.createElement('summary');
+    sum.textContent = (it.script && it.script.length) ? '🎥 Script vidéo mot à mot (prêt à filmer)' : '🎥 Script / plan détaillé (scène par scène)';
+    det.appendChild(sum);
+    const body=document.createElement('div'); body.className='recette-corps';
+    scenes.forEach(function(s,i){
+      const d=document.createElement('div'); d.className='scene';
+      const h=document.createElement('div');
+      h.innerHTML='<span class="scene-t">⏱️ '+esc(s.t||('Scène '+(i+1)))+'</span>'+(s.plan?' — '+esc(s.plan):'');
+      d.appendChild(h);
+      if(s.ecran){ const e=document.createElement('div'); e.innerHTML='✍️ <b>À l\'écran :</b> « '+esc(s.ecran)+' »'; d.appendChild(e); }
+      if(s.voix){ const v=document.createElement('div'); v.innerHTML='🎙️ <b>Réplique :</b> « '+esc(s.voix)+' »'; d.appendChild(v); }
+      body.appendChild(d);
+    });
+    det.appendChild(body);
+    return det;
+  }
+
+  // ----- Dates, planification, statut publié -----
+  const JOURS_FR=['dim.','lun.','mar.','mer.','jeu.','ven.','sam.'];
+  const MOIS_COURT=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  function dateLisible(iso){ if(!iso) return ''; const p=iso.split('-'); if(p.length!==3) return iso;
+    const d=new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
+    return JOURS_FR[d.getDay()]+' '+Number(p[2])+' '+MOIS_COURT[Number(p[1])-1]; }
+  function togglePublie(it){ if(publie.has(it.titre)) publie.delete(it.titre); else publie.add(it.titre); sauverPublie(); render(); }
+  function planifier(it, div){
+    fermerPop();
+    const pop=document.createElement('div'); pop.className='pop'; pop.id='pop-actif'; pop.onclick=function(e){e.stopPropagation();};
+    const lab=document.createElement('div'); lab.className='pop-vide'; lab.textContent='📅 Publier cette idée le :'; pop.appendChild(lab);
+    const inp=document.createElement('input'); inp.type='date'; inp.value=plan[it.titre]||'';
+    inp.style.cssText='width:100%;padding:7px;border:1px solid #d1d5db;border-radius:6px;font-size:13px';
+    inp.onclick=function(e){e.stopPropagation();};
+    inp.onchange=function(){ if(inp.value){ plan[it.titre]=inp.value; } else { delete plan[it.titre]; } sauverPlan(); render(); };
+    pop.appendChild(inp);
+    if(plan[it.titre]){
+      const rm=document.createElement('button'); rm.textContent='Retirer du plan';
+      rm.style.cssText='margin-top:8px;border:none;background:#b91c1c;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:13px';
+      rm.onclick=function(e){ e.stopPropagation(); delete plan[it.titre]; sauverPlan(); render(); }; pop.appendChild(rm);
+    }
+    div.appendChild(pop);
+  }
+
+  function carteHTML(it){
+    const ex = exemplePour(it);
+    const moment = estDuMoment(it) ? '<span class="tag moment">⭐ Idée du moment</span>' : '';
+    const recoTag = (vue.type==='reco') ? '<span class="tag" style="background:#fff7ed;color:#c2410c">🎯 Pour toi</span>' : '';
+    const persoBadge = it.perso ? '<span class="tag" style="background:#f3e8ff;color:#7e22ce">✏️ Mon idée</span>' : '';
+    const objTag = it.objectif ? '<span class="tag" style="background:#fef9c3;color:#854d0e">🎯 '+esc(it.objectif)+'</span>' : '';
+    const planBadge = plan[it.titre] ? '<span class="badge badge-plan">📅 '+esc(dateLisible(plan[it.titre]))+'</span>' : '';
+    const pubBadge = publie.has(it.titre) ? '<span class="badge badge-pub">✅ Publié</span>' : '';
+    const div = document.createElement('div');
+    div.className = 'carte' + (selectionMode && selection.has(it.titre) ? ' selected' : '') + (publie.has(it.titre) ? ' publie' : '');
+    div.innerHTML =
+      '<div class="tags"><span class="tag">'+esc(it.cat)+'</span>'+
+      '<span class="tag format">'+esc(it.format)+'</span>'+objTag+moment+recoTag+persoBadge+planBadge+pubBadge+'</div>'+
+      '<h3>'+esc(it.titre)+'</h3>'+
+      '<p class="pourquoi">'+esc(it.pourquoi)+'</p>'+
+      (it.angle ? '<p class="angle">💡 <b>Angle malin :</b> '+esc(it.angle)+'</p>' : '')+
+      (it.momentideal ? '<p class="moment-ideal">⏰ <b>Moment idéal :</b> '+esc(it.momentideal)+'</p>' : '')+
+      '<div class="legende">'+esc(it.legende)+'</div>'+
+      '<div class="hash">'+esc(it.hashtags)+'</div>'+
+      '<div class="actions">'+
+        '<a class="btn btn-exemple" href="'+esc(ex.url)+'" target="_blank" rel="noopener">🔗 Voir un exemple</a>'+
+      '</div>';
+
+    // pastilles des groupes (entre les hashtags et les boutons)
+    const chips = construireChips(it);
+    if(chips) div.insertBefore(chips, div.querySelector('.actions'));
+
+    // recette complète "Comment la réaliser" (repliable)
+    div.insertBefore(recetteHTML(it), div.querySelector('.actions'));
+
+    // script vidéo mot à mot (idées phares uniquement)
+    const sc = scriptHTML(it);
+    if(sc) div.insertBefore(sc, div.querySelector('.actions'));
+
+    // bouton J'aime (coeur)
+    const like = document.createElement('button');
+    like.className='like'; like.title='Garder dans mes favoris';
+    like.textContent = likes.has(it.titre) ? '❤️' : '🤍';
+    like.onclick = function(e){ e.stopPropagation(); toggleLike(it, like); };
+    div.appendChild(like);
+
+    // case à cocher (mode sélection)
+    if(selectionMode){
+      const cb = document.createElement('input');
+      cb.type='checkbox'; cb.className='select-box'; cb.checked = selection.has(it.titre);
+      cb.onclick = function(e){ e.stopPropagation(); toggleSelect(it, div, cb.checked); };
+      div.appendChild(cb);
+      div.onclick = function(){ cb.checked = !cb.checked; toggleSelect(it, div, cb.checked); };
+    }
+
+    // bouton Copier
+    const btn = document.createElement('button');
+    btn.className='btn btn-copier'; btn.textContent='📋 Copier la légende';
+    btn.onclick = function(e){
+      e.stopPropagation();
+      const txt = it.legende + '\n\n' + it.hashtags;
+      navigator.clipboard.writeText(txt).then(function(){
+        const old=btn.textContent; btn.textContent='✅ Copié !';
+        setTimeout(function(){btn.textContent=old;},1500);
+      });
+    };
+    div.querySelector('.actions').prepend(btn);
+
+    // bouton Classer dans un groupe
+    const grpBtn = document.createElement('button');
+    grpBtn.className='btn btn-grp'; grpBtn.textContent='📁 Classer';
+    grpBtn.onclick = function(e){ e.stopPropagation();
+      const p=document.getElementById('pop-actif');
+      if(p && div.contains(p)) fermerPop(); else ouvrirPop(it, div);
+    };
+    div.querySelector('.actions').appendChild(grpBtn);
+
+    // bouton Planifier (calendrier)
+    const planBtn = document.createElement('button');
+    planBtn.className='btn'; planBtn.style.cssText='background:#fff;color:#1d4ed8;border:1px solid #1d4ed8';
+    planBtn.textContent = plan[it.titre] ? ('📅 '+dateLisible(plan[it.titre])) : '📅 Planifier';
+    planBtn.onclick = function(e){ e.stopPropagation();
+      const p=document.getElementById('pop-actif'); if(p && div.contains(p)) fermerPop(); else planifier(it, div); };
+    div.querySelector('.actions').appendChild(planBtn);
+
+    // bouton Publié
+    const estPub = publie.has(it.titre);
+    const pubBtn = document.createElement('button'); pubBtn.className='btn';
+    pubBtn.style.cssText = estPub ? 'background:#067647;color:#fff' : 'background:#fff;color:#067647;border:1px solid #067647';
+    pubBtn.textContent = estPub ? '✅ Publié' : '☐ Marquer publié';
+    pubBtn.onclick = function(e){ e.stopPropagation(); togglePublie(it); };
+    div.querySelector('.actions').appendChild(pubBtn);
+
+    // bouton Supprimer (cette idée)
+    const sup = document.createElement('button');
+    sup.className='btn btn-suppr'; sup.textContent='🗑️ Supprimer';
+    sup.onclick = function(e){ e.stopPropagation(); supprimerUne(it); };
+    div.querySelector('.actions').appendChild(sup);
+
+    return div;
+  }
+
+  function listePour(){
+    const vis = idees.filter(it => !deleted.has(it.titre));
+    if(vue.type==='reco'){ const P=prefs();
+      return vis.map(function(it){ return {it:it, s:scoreIdee(it,P)}; })
+               .sort(function(a,b){ return b.s - a.s; })
+               .slice(0, 12).map(function(x){ return x.it; }); }
+    if(vue.type==='plan')    return vis.filter(it => plan[it.titre]).sort(function(a,b){ return plan[a.titre] < plan[b.titre] ? -1 : 1; });
+    if(vue.type==='publie')  return vis.filter(it => publie.has(it.titre));
+    if(vue.type==='favoris') return vis.filter(it => likes.has(it.titre));
+    if(vue.type==='cat')     return vis.filter(it => it.cat === vue.val);
+    if(vue.type==='groupe')  return vis.filter(it => (groupes[vue.val]||[]).indexOf(it.titre)!==-1);
+    if(vue.type==='search')  return vis.filter(i => (i.titre+i.pourquoi+i.legende+i.cat+(i.hashtags||'')+(i.angle||'')+(i.objectif||'')).toLowerCase().indexOf(vue.val)!==-1);
+    return lotCourant.filter(it => !deleted.has(it.titre)); // moment
+  }
+
+  function afficher(liste){
+    const g = document.getElementById('grille');
+    g.classList.toggle('selection', selectionMode);
+    g.innerHTML='';
+    if(liste.length===0){
+      let msg = "Aucune idée à afficher ici.";
+      if(vue.type==='favoris') msg = "Aucun favori. Clique le 🤍 sur une idée pour la garder ici. ❤️";
+      else if(vue.type==='groupe') msg = "Ce groupe est vide. Sur une idée, clique « 📁 Classer » pour l'y ajouter.";
+      else if(vue.type==='plan') msg = "Ton plan est vide. Sur une idée, clique « 📅 Planifier » pour choisir une date de publication.";
+      else if(vue.type==='publie') msg = "Aucune idée publiée. Quand tu en publies une, clique « ☐ Marquer publié ».";
+      else if(vue.type==='search') msg = "Aucune idée ne correspond à ta recherche.";
+      const d=document.createElement('div'); d.className='vide'; d.textContent=msg; g.appendChild(d);
+    } else {
+      liste.forEach(function(it){ g.appendChild(carteHTML(it)); });
+    }
+    document.getElementById('compteur').textContent = liste.length + ' idée(s)';
+  }
+
+  function cats(){ return Array.from(new Set(idees.filter(it=>!deleted.has(it.titre)).map(i=>i.cat))).sort(); }
+  function nbCat(c){ return idees.filter(it=>!deleted.has(it.titre) && it.cat===c).length; }
+  function nbFavoris(){ let n=0; likes.forEach(function(t){ if(!deleted.has(t)) n++; }); return n; }
+
+  // ----- Tiroir (menu hamburger) -----
+  function sectionTitre(t){ const d=document.createElement('div'); d.className='tiroir-section'; d.textContent=t;
+    document.getElementById('tiroirCorps').appendChild(d); }
+  function tiroirItem(label, actif, onClick, compte){
+    const d=document.createElement('div'); d.className='tiroir-item'+(actif?' actif':'');
+    const s=document.createElement('span'); s.textContent=label; d.appendChild(s);
+    if(compte!=null){ const c=document.createElement('span'); c.className='compte'; c.textContent=compte; d.appendChild(c); }
+    d.onclick=onClick; document.getElementById('tiroirCorps').appendChild(d); return d;
+  }
+  function construireTiroir(){
+    const corps=document.getElementById('tiroirCorps'); if(!corps) return; corps.innerHTML='';
+    const res=document.createElement('div'); res.style.cssText='padding:8px 18px 2px;font-size:12.5px;color:#6b7280;line-height:1.8';
+    res.innerHTML='📊 <b>'+idees.filter(function(i){return !deleted.has(i.titre);}).length+'</b> idées &middot; ❤️ '+nbFavoris()+
+      ' &middot; 📁 '+Object.keys(groupes).length+' &middot; 📅 '+Object.keys(plan).length+' &middot; ✅ '+publie.size;
+    corps.appendChild(res);
+    sectionTitre('NAVIGATION');
+    tiroirItem('⭐ Idées du moment', vue.type==='moment', function(){ vue={type:'moment'}; fermerTiroir(); render(); });
+    tiroirItem('🎯 Recommandé pour moi', vue.type==='reco', function(){ vue={type:'reco'}; fermerTiroir(); render(); });
+    tiroirItem('📅 Mon plan', vue.type==='plan', function(){ vue={type:'plan'}; fermerTiroir(); render(); }, Object.keys(plan).length);
+    tiroirItem('✅ Publiées', vue.type==='publie', function(){ vue={type:'publie'}; fermerTiroir(); render(); }, publie.size);
+    tiroirItem('❤️ Mes favoris', vue.type==='favoris', function(){ vue={type:'favoris'}; fermerTiroir(); render(); }, nbFavoris());
+
+    sectionTitre('CATÉGORIES');
+    cats().forEach(function(cat){
+      tiroirItem(cat, vue.type==='cat'&&vue.val===cat, function(){ vue={type:'cat',val:cat}; fermerTiroir(); render(); }, nbCat(cat));
+    });
+
+    sectionTitre('MES GROUPES');
+    const noms=Object.keys(groupes).sort();
+    if(noms.length===0){
+      const d=document.createElement('div'); d.style.cssText='padding:2px 18px 4px;color:#6b7280;font-size:13px';
+      d.textContent="Crée un groupe pour classer tes idées 👇"; corps.appendChild(d);
+    }
+    noms.forEach(function(nom){
+      const it=tiroirItem('📁 '+nom, vue.type==='groupe'&&vue.val===nom, function(){ vue={type:'groupe',val:nom}; fermerTiroir(); render(); },
+        (groupes[nom]||[]).filter(function(t){ return !deleted.has(t); }).length);
+      const ren=document.createElement('button'); ren.className='mini'; ren.textContent='✏️'; ren.title='Renommer';
+      ren.onclick=function(e){ e.stopPropagation(); const nv=prompt('Renommer le groupe :', nom); if(nv&&nv.trim()){ renommerGroupe(nom, nv.trim()); render(); } };
+      const del=document.createElement('button'); del.className='mini'; del.textContent='🗑️'; del.title='Supprimer le groupe';
+      del.onclick=function(e){ e.stopPropagation(); if(confirm('Supprimer le groupe « '+nom+' » ?\n(Les idées ne sont pas supprimées, juste le classement.)')){ supprimerGroupe(nom); render(); } };
+      it.appendChild(ren); it.appendChild(del);
+    });
+    const add=document.createElement('div'); add.className='tiroir-ajout';
+    const inp=document.createElement('input'); inp.placeholder='Nouveau groupe…';
+    const ok=document.createElement('button'); ok.textContent='+'; ok.title='Créer le groupe';
+    const creer=function(){ const v=inp.value.trim(); if(!v) return; creerGroupe(v); inp.value=''; construireTiroir(); };
+    ok.onclick=creer; inp.onkeydown=function(e){ if(e.key==='Enter') creer(); };
+    add.appendChild(inp); add.appendChild(ok); corps.appendChild(add);
+
+    sectionTitre('OUTILS');
+    tiroirItem('🔄 Chercher des nouvelles (internet)', false, function(){ fermerTiroir(); chercherNouvellesEnLigne(); });
+    tiroirItem('➕ Ajouter mon idée', false, function(){ fermerTiroir(); ouvrirFormulaireIdee(); });
+    tiroirItem('📤 Exporter / Imprimer', false, function(){ fermerTiroir(); ouvrirExport(); });
+    tiroirItem(selectionMode?'☑️ Sélection activée':'☑️ Sélectionner des idées', selectionMode, function(){
+      selectionMode=!selectionMode; if(!selectionMode) selection.clear(); fermerTiroir(); render(); });
+    if(deleted.size>0){
+      tiroirItem('♻️ Restaurer les supprimées', false, function(){ deleted.clear(); sauver(); fermerTiroir(); render(); }, deleted.size);
+    }
+    tiroirItem('❓ Aide / Guide', false, function(){ fermerTiroir(); ouvrirAide(); });
+    tiroirItem('🧹 Réinitialiser / Réparer', false, function(){ fermerTiroir(); reinitialiser(); });
+  }
+  function ouvrirTiroir(){ construireTiroir();
+    document.getElementById('tiroir').classList.add('ouvert'); document.getElementById('overlay').classList.add('ouvert'); }
+  function fermerTiroir(){
+    document.getElementById('tiroir').classList.remove('ouvert'); document.getElementById('overlay').classList.remove('ouvert'); }
+
+  // ===== Fenêtres (modales) : ajouter une idée, exporter, aide =====
+  function fermerModale(){ document.getElementById('modaleFond').classList.remove('ouvert');
+    document.getElementById('modaleBoite').innerHTML=''; }
+  function ouvrirModale(noeud){ const b=document.getElementById('modaleBoite'); b.innerHTML=''; b.appendChild(noeud);
+    document.getElementById('modaleFond').classList.add('ouvert'); }
+
+  function ajouterIdeePerso(o){
+    if(idees.some(function(i){ return i.titre===o.titre; })){ alert("Une idée porte déjà ce titre. Change-le un peu."); return false; }
+    const idee={ titre:o.titre, cat:(o.cat||'Mon idée'), format:(o.format||'Image'), mois:[], perso:true,
+      pourquoi:(o.pourquoi||'Idée personnelle ajoutée par toi.'), legende:(o.legende||''),
+      hashtags:(o.hashtags||'#AmigoKarting #Gatineau') };
+    perso.push(idee); idees.push(idee); sauverPerso(); return true;
+  }
+  function ouvrirFormulaireIdee(){
+    const f=document.createElement('div');
+    f.innerHTML='<h2>➕ Ajouter mon idée</h2>'+
+      '<label>Titre *</label><input id="f_titre" placeholder="Ex. Notre nouveau kart électrique">'+
+      '<label>Catégorie</label><input id="f_cat" list="f_cats" placeholder="Ex. Promotion">'+
+      '<datalist id="f_cats">'+cats().map(function(c){ return '<option value="'+esc(c)+'">'; }).join('')+'</datalist>'+
+      '<label>Format</label><select id="f_format">'+
+        ['Reel vidéo','Carrousel','Story (sondage)','Image','Live','Publication texte'].map(function(x){ return '<option>'+x+'</option>'; }).join('')+'</select>'+
+      '<label>Légende (le texte à publier) *</label><textarea id="f_leg" placeholder="Écris ta légende ici…"></textarea>'+
+      '<label>Hashtags</label><input id="f_hash" value="#AmigoKarting #Karting #Gatineau">'+
+      '<label>Pourquoi ça marche (optionnel)</label><input id="f_pourquoi" placeholder="À quoi sert cette publication ?">'+
+      '<div class="modale-actions"><button class="btn-bar" id="f_annul">Annuler</button>'+
+      '<button class="gros-btn" id="f_ok">Ajouter l\'idée</button></div>';
+    ouvrirModale(f);
+    document.getElementById('f_annul').onclick=fermerModale;
+    document.getElementById('f_ok').onclick=function(){
+      const titre=document.getElementById('f_titre').value.trim();
+      const leg=document.getElementById('f_leg').value.trim();
+      if(!titre || !leg){ alert("Mets au moins un titre et une légende."); return; }
+      const ok=ajouterIdeePerso({ titre:titre, cat:document.getElementById('f_cat').value.trim(),
+        format:document.getElementById('f_format').value, legende:leg,
+        hashtags:document.getElementById('f_hash').value.trim(), pourquoi:document.getElementById('f_pourquoi').value.trim() });
+      if(ok){ likes.add(titre); sauver(); fermerModale(); vue={type:'favoris'}; render(); }
+    };
+  }
+
+  function texteDeLaVue(){
+    const liste=listePour();
+    const ou=document.getElementById('filActuel').textContent.replace(/←.*$/,'').trim();
+    let out='IDÉES DE PUBLICATIONS — AMIGO KARTING\n('+ou+')\n\n';
+    liste.forEach(function(it,n){
+      out+=(n+1)+'. '+it.titre+'  ['+it.cat+' · '+it.format+(it.objectif?' · 🎯 '+it.objectif:'')+']\n';
+      if(it.angle) out+='   💡 Angle : '+it.angle+'\n';
+      if(it.momentideal) out+='   ⏰ Moment idéal : '+it.momentideal+'\n';
+      if(plan[it.titre]) out+='   📅 Prévu : '+dateLisible(plan[it.titre])+'\n';
+      out+='   '+it.legende+'\n   '+it.hashtags+'\n\n';
+    });
+    return out;
+  }
+  function ouvrirExport(){
+    const liste=listePour();
+    const ou=document.getElementById('filActuel').textContent.replace(/←.*$/,'').trim();
+    const f=document.createElement('div');
+    f.innerHTML='<h2>📤 Exporter / Imprimer</h2><p>'+liste.length+' idée(s) dans la vue actuelle ('+esc(ou)+').</p>'+
+      '<div class="modale-actions" style="justify-content:flex-start">'+
+      '<button class="btn-bar" id="x_print">🖨️ Imprimer / PDF</button>'+
+      '<button class="btn-bar" id="x_copy">📋 Copier tout</button>'+
+      '<button class="btn-bar" id="x_dl">💾 Télécharger (.txt)</button>'+
+      '<button class="btn-bar" id="x_close">Fermer</button></div>';
+    ouvrirModale(f);
+    document.getElementById('x_close').onclick=fermerModale;
+    document.getElementById('x_print').onclick=function(){ fermerModale(); setTimeout(function(){ window.print(); }, 200); };
+    document.getElementById('x_copy').onclick=function(){ navigator.clipboard.writeText(texteDeLaVue()).then(function(){ alert('Copié ! Tu peux le coller où tu veux.'); }); };
+    document.getElementById('x_dl').onclick=function(){
+      const blob=new Blob([texteDeLaVue()], {type:'text/plain;charset=utf-8'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='idees-amigo-karting.txt';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    };
+  }
+
+  function ouvrirAide(){
+    const f=document.createElement('div');
+    f.innerHTML='<h2>❓ Guide rapide</h2>'+
+      '<p><b>✨ Générer</b> : de nouvelles idées à chaque clic (sans répétition), adaptées au mois.</p>'+
+      '<p><b>🎬 Comment la réaliser</b> : sur chaque idée, déplie la recette complète (accroche, plan de tournage, son…).</p>'+
+      '<p><b>❤️ Favoris &amp; 📁 Groupes</b> : garde et classe tes idées (menu ☰).</p>'+
+      '<p><b>📅 Planifier</b> : choisis une date → retrouve tout dans « 📅 Mon plan ».</p>'+
+      '<p><b>☐ Marquer publié</b> : suis ce que tu as déjà posté (vue « ✅ Publiées »).</p>'+
+      '<p><b>🎯 Recommandé pour moi</b> : l\'app apprend de tes goûts.</p>'+
+      '<p><b>🔄 Nouvelles</b> : cherche les actualités sur internet (karting, F1, événements locaux), triées par pertinence — juste une connexion suffit, aucune installation.</p>'+
+      '<p><b>➕ Ajouter mon idée</b> &amp; <b>📤 Exporter / Imprimer</b> : dans le menu ☰.</p>'+
+      '<div class="modale-actions"><button class="gros-btn" id="a_ok">Compris !</button></div>';
+    ouvrirModale(f);
+    document.getElementById('a_ok').onclick=fermerModale;
+  }
+
+  // ===== Recherche de nouvelles DIRECTEMENT dans le navigateur (sans Python) =====
+  // Le navigateur ne peut pas lire un autre site directement (securite) : on passe
+  // par un petit relais public gratuit (CORS proxy). On en essaie plusieurs au cas ou.
+  const PROXIES=[
+    function(u){ return 'https://api.allorigins.win/raw?url='+encodeURIComponent(u); },
+    function(u){ return 'https://api.codetabs.com/v1/proxy/?quest='+encodeURIComponent(u); },
+    function(u){ return 'https://corsproxy.io/?url='+encodeURIComponent(u); }
+  ];
+  const NEWS_QUERIES=['karting','go-kart','course de karting','Formule 1 Grand Prix Canada',
+    'Gatineau evenement','Outaouais festival','sortie famille Quebec ete','loisir famille Gatineau'];
+  const NEWS_FORTS=['karting','kart ','go-kart','gokart','karts','formule 1','formule1',' f1 ',
+    'grand prix','course automobile','circuit','autodrome','pilote','vitesse','moteur','racing'];
+  const NEWS_MOYENS=['festival','événement','evenement','famille','sortie','activité','activite',
+    'vacances','relâche','relache','ado','jeunes','anniversaire','plein air','attraction','tourisme',
+    'week-end','fin de semaine','loisir','parc','gatineau','outaouais','ottawa','aylmer','hull'];
+  const NEWS_BRUIT=['épisode','balado','podcast','horoscope','météo','meteo','lotto','loterie','nécrologie','décès','bulletin'];
+  function scoreNews(t){ t=' '+t.toLowerCase()+' '; var s=0;
+    NEWS_FORTS.forEach(function(m){ if(t.indexOf(m)!==-1) s+=3; });
+    NEWS_MOYENS.forEach(function(m){ if(t.indexOf(m)!==-1) s+=1; }); return s; }
+  function estBruitNews(t){ t=t.toLowerCase(); return NEWS_BRUIT.some(function(b){ return t.indexOf(b)!==-1; }); }
+  function nettoyerTitreN(t){ return String(t||'').replace(/\s+-\s+[^-]+$/,'').trim(); }
+  function isoToday(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function ageJoursN(iso){ if(!iso) return 999; var p=String(iso).split('-'); var d=new Date(Number(p[0]),Number(p[1])-1,Number(p[2])); return Math.floor((Date.now()-d.getTime())/86400000); }
+  function filRssN(q){ return 'https://news.google.com/rss/search?q='+encodeURIComponent(q+' when:40d')+'&hl=fr-CA&gl=CA&ceid=CA:fr'; }
+  async function fetchViaProxy(url){
+    for(var i=0;i<PROXIES.length;i++){
+      try{ var r=await fetch(PROXIES[i](url)); if(r && r.ok){ var t=await r.text(); if(t && t.indexOf('<')!==-1) return t; } }catch(e){}
+    }
+    return null;
+  }
+  function parseRssN(xml){
+    try{
+      var doc=new DOMParser().parseFromString(xml,'text/xml');
+      return Array.prototype.map.call(doc.querySelectorAll('item'), function(it){
+        var g=function(sel){ var el=it.querySelector(sel); return el?el.textContent.trim():''; };
+        var pub=g('pubDate');
+        return { titre:g('title'), lien:g('link'), source:g('source'), date: pub?new Date(pub):null };
+      });
+    }catch(e){ return []; }
+  }
+  function fabriquerActu(n){
+    var t=nettoyerTitreN(n.titre); if(t.length>80) t=t.slice(0,77)+'...';
+    var src=n.source?(' ('+n.source+')'):'';
+    var mois=n.date?(n.date.getMonth()+1):(new Date().getMonth()+1);
+    return { titre:'À chaud : '+t, cat:'Actualite', format:'Réactif (Story / Reel)', mois:[mois],
+      objectif:'Notoriete',
+      angle:"Rebondir sur une actualite chaude met ta page dans une conversation qui a deja l'attention de tous : portee empruntee, a cout zero.",
+      momentideal:"Le plus vite possible apres la parution : une actu se perime en quelques jours.",
+      pourquoi:"Nouvelle recente"+src+" : rebondir dessus rend ta publication d'actualite et augmente la portee.",
+      legende:"📣 Dans l'actualité : « "+t+" ». Chez Amigo Karting, on rebondit dessus ! 🏁 [Adapte ce post à la nouvelle.] Viens vivre l'action sur notre piste éclairée de 1,1 km à Gatineau.",
+      hashtags:'#AmigoKarting #Actualite #Karting #Gatineau #Outaouais',
+      exemple_url:n.lien||'#', exemple_label:'Lire la nouvelle : '+t+src,
+      variantes:["Donne TON point de vue de pro du karting sur la nouvelle","Relie la nouvelle a une offre ou un defi chez Amigo"],
+      ajoute_le:isoToday(), cle_actu:nettoyerTitreN(n.titre).toLowerCase() };
+  }
+  function ouvrirModaleTexte(titre, message){
+    var f=document.createElement('div');
+    f.innerHTML='<h2>'+esc(titre)+'</h2><p>'+message+'</p><div class="modale-actions"><button class="gros-btn" id="mt_ok">OK</button></div>';
+    ouvrirModale(f);
+    var b=document.getElementById('mt_ok'); if(b) b.onclick=fermerModale;
+  }
+  var rechercheEnCours=false;
+  async function chercherNouvellesEnLigne(){
+    if(rechercheEnCours) return; rechercheEnCours=true;
+    ouvrirModaleTexte('🔄 Recherche en cours…', "Je cherche les actualités pertinentes sur internet (karting, F1, événements de la région). Quelques secondes… ⏳");
+    try{
+      actu = actu.filter(function(a){ return ageJoursN(a.ajoute_le)<=25; });   // on retire les vieilles
+      var bloque={}; Object.keys(histNews).forEach(function(k){ bloque[k]=1; });
+      actu.forEach(function(a){ if(a.cle_actu) bloque[a.cle_actu]=1; });
+      var trouvees=[], vues={}, horsujet=0, deja=0, erreurs=0;
+      for(var qi=0; qi<NEWS_QUERIES.length; qi++){
+        var xml=await fetchViaProxy(filRssN(NEWS_QUERIES[qi]));
+        if(!xml){ erreurs++; continue; }
+        var items=parseRssN(xml);
+        for(var k=0;k<items.length;k++){
+          var n=items[k]; var cle=nettoyerTitreN(n.titre).toLowerCase();
+          if(!cle || vues[cle]) continue;
+          if(estBruitNews(n.titre)) continue;
+          if(bloque[cle]){ deja++; continue; }
+          var sc=scoreNews(n.titre); if(sc<3){ horsujet++; continue; }
+          n.score=sc; vues[cle]=1; trouvees.push(n);
+        }
+      }
+      trouvees.sort(function(a,b){ return (b.score-a.score) || ((b.date?b.date.getTime():0)-(a.date?a.date.getTime():0)); });
+      trouvees=trouvees.slice(0,12);
+      var ajoutees=0;
+      trouvees.forEach(function(n){ var idee=fabriquerActu(n);
+        if(!actu.some(function(a){return a.titre===idee.titre;})){ actu.unshift(idee); histNews[idee.cle_actu]=isoToday(); ajoutees++; } });
+      actu = actu.slice(0,18);
+      Object.keys(histNews).forEach(function(kk){ if(ageJoursN(histNews[kk])>180) delete histNews[kk]; });
+      sauverActu(); sauverHistNews(); appliquerActu();
+      vue={type:'cat', val:'Actualite'}; render();
+      if(ajoutees>0){
+        ouvrirModaleTexte('✅ '+ajoutees+' nouvelle(s) ajoutée(s) !',
+          "Elles sont dans la catégorie « Actualité » (triées par pertinence)."+(deja?(' '+deja+' déjà vues ont été ignorées.'):''));
+      } else if(erreurs===NEWS_QUERIES.length){
+        ouvrirModaleTexte('😕 Connexion impossible',
+          "Je n'ai pas réussi à joindre le service de recherche. Vérifie ta connexion internet et réessaie dans un moment. (L'app continue de fonctionner normalement.)");
+      } else {
+        ouvrirModaleTexte('👍 Rien de neuf',
+          "Aucune nouvelle pertinente inédite pour l'instant ("+deja+" déjà vues, "+horsujet+" hors-sujet écartées). Réessaie plus tard !");
+      }
+    }catch(err){
+      ouvrirModaleTexte('😕 Oups', "La recherche n'a pas pu se terminer. Réessaie dans un moment.");
+    }
+    rechercheEnCours=false;
+  }
+
+  function reinitialiser(){
+    if(!confirm("Tout reinitialiser ? Ca efface tes favoris, groupes, plan, idees perso et reglages SUR CET ORDINATEUR. Les idees de base reviennent au complet. (Utile si l'app bugue.)")) return;
+    try{ ['amigoKarting_likes','amigoKarting_deleted','amigoKarting_vues','amigoKarting_groupes',
+          'amigoKarting_perso','amigoKarting_plan','amigoKarting_publie','amigoKarting_vu']
+          .forEach(function(k){ localStorage.removeItem(k); }); }catch(e){}
+    try{ location.reload(); }catch(e){ likes=new Set(); deleted=new Set(); vues=new Set(); groupes={}; perso=[]; plan={}; publie=new Set(); vue={type:'moment'}; lotCourant=genererLot(9); render(); }
+  }
+
+  function majBarres(){
+    document.getElementById('btnFavoris').textContent='❤️ Favoris ('+nbFavoris()+')';
+    document.getElementById('btnFavoris').classList.toggle('actif', vue.type==='favoris');
+    document.getElementById('barreSel').style.display = selectionMode ? 'flex' : 'none';
+    document.getElementById('selInfo').textContent = selection.size + ' sélectionnée(s)';
+  }
+  function majFil(){
+    const f=document.getElementById('filActuel'); if(!f) return;
+    let t='⭐ Idées du moment';
+    if(vue.type==='reco') t='🎯 Recommandé pour moi <span style="color:#6b7280">· d\'après tes favoris, groupes et choix</span>';
+    else if(vue.type==='plan') t='📅 Mon plan de publication <span style="color:#6b7280">· classé par date</span>';
+    else if(vue.type==='publie') t='✅ Idées publiées';
+    else if(vue.type==='favoris') t='❤️ Mes favoris';
+    else if(vue.type==='cat') t='Catégorie : <b>'+esc(vue.val)+'</b>';
+    else if(vue.type==='groupe') t='📁 Groupe : <b>'+esc(vue.val)+'</b>';
+    else if(vue.type==='search') t='🔎 Recherche : <b>'+esc(vue.val)+'</b>';
+    f.innerHTML = t + (vue.type!=='moment' ? ' &nbsp;·&nbsp; <a href="#" id="retourMoment" style="color:#e23b2e;text-decoration:none">← retour aux idées</a>' : '');
+    const r=document.getElementById('retourMoment'); if(r) r.onclick=function(e){ e.preventDefault(); vue={type:'moment'}; render(); };
+  }
+
+  function render(){
+    try{ construireTiroir(); majFil(); majBarres(); afficher(listePour()); }
+    catch(e){ try{ var g=document.getElementById('grille'); if(g){ g.innerHTML='';
+      var d=document.createElement('div'); d.className='vide';
+      d.textContent="Petit souci d'affichage. Ouvre le menu ☰ puis « 🧹 Réinitialiser / Réparer ».";
+      g.appendChild(d); } }catch(_){} }
+  }
+  function noteCycle(msg){ const e=document.getElementById('cycleNote'); if(!e) return;
+    e.textContent=msg; setTimeout(function(){ e.textContent=''; }, 6000); }
+
+  // ----- Branchements des boutons -----
+  document.getElementById('btnMenu').onclick=ouvrirTiroir;
+  document.getElementById('fermerTiroir').onclick=fermerTiroir;
+  document.getElementById('overlay').onclick=fermerTiroir;
+  document.addEventListener('click', function(){ fermerPop(); });
+  document.getElementById('modaleFond').onclick=function(e){ if(e.target.id==='modaleFond') fermerModale(); };
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ fermerModale(); fermerPop(); fermerTiroir(); } });
+
+  document.getElementById('generer').onclick=function(){
+    lotCourant = genererLot(9); vue={type:'moment'}; render();
+    if(cycleRecommence) noteCycle("🔄 Tu as vu toutes les idées — on recommence un nouveau tour !");
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  document.getElementById('btnFavoris').onclick=function(){
+    vue = (vue.type==='favoris') ? {type:'moment'} : {type:'favoris'}; render();
+  };
+  document.getElementById('btnNews').onclick=function(){ chercherNouvellesEnLigne(); };
+  document.getElementById('selAll').onclick=function(){
+    listePour().forEach(function(it){ selection.add(it.titre); }); render();
+  };
+  document.getElementById('selGroupe').onclick=function(){
+    if(selection.size===0){ alert("Coche d'abord des idées (la case en haut à gauche de chaque carte)."); return; }
+    const nom=prompt("Classer les "+selection.size+" idée(s) cochées dans quel groupe ?\n(tape un nom existant ou un nouveau nom)");
+    if(!nom) return; const v=nom.trim(); if(!v) return;
+    creerGroupe(v); selection.forEach(function(t){ if(groupes[v].indexOf(t)===-1) groupes[v].push(t); });
+    sauverGroupes();
+    alert(selection.size+" idée(s) classées dans « "+v+" ».");
+    selection.clear(); selectionMode=false; render();
+  };
+  document.getElementById('selCancel').onclick=function(){
+    selectionMode=false; selection.clear(); render();
+  };
+  document.getElementById('selDelete').onclick=function(){
+    if(selection.size===0){ alert("Coche d'abord des idées (la case en haut à gauche de chaque carte)."); return; }
+    if(confirm('Supprimer '+selection.size+' idée(s) ? Tu pourras les restaurer (menu ☰ › Restaurer).')){
+      selection.forEach(function(t){ deleted.add(t); likes.delete(t); });
+      selection.clear(); selectionMode=false; sauver(); render();
+    }
+  };
+  var rech=document.getElementById('recherche'), eff=document.getElementById('effacerRecherche');
+  rech.addEventListener('input', function(e){
+    const q=e.target.value.toLowerCase().trim();
+    eff.style.display = q ? 'block' : 'none';
+    if(!q){ vue={type:'moment'}; render(); return; }
+    vue={type:'search', val:q}; render();
+  });
+  eff.onclick=function(){ rech.value=''; eff.style.display='none'; vue={type:'moment'}; render(); };
+
+  // ----- Démarrage (avec filet de sécurité) -----
+  try {
+    lotCourant = genererLot(9);
+    render();
+    try{ if(!localStorage.getItem('amigoKarting_vu')){ localStorage.setItem('amigoKarting_vu','1'); ouvrirAide(); } }catch(e){}
+  } catch(err) {
+    var g=document.getElementById('grille');
+    if(g){ g.innerHTML='';
+      var d=document.createElement('div'); d.className='vide';
+      d.appendChild(document.createTextNode("Oups, un petit souci d'affichage. Clique pour tout remettre d'aplomb : "));
+      var b=document.createElement('button'); b.className='gros-btn'; b.style.marginTop='10px'; b.textContent='🧹 Réparer';
+      b.onclick=reinitialiser; d.appendChild(document.createElement('br')); d.appendChild(b);
+      g.appendChild(d);
+    }
+  }
+})();
+</script>
+</body>
+</html>

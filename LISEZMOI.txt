@@ -1,0 +1,168 @@
+====================================================
+  IDEES DE PUBLICATIONS - AMIGO KARTING
+====================================================
+
+C'est quoi ?
+------------
+Un outil qui te DONNE des idees de publications (Facebook, Instagram, TikTok)
+parfaites pour Amigo Karting. Il fonctionne TOUT SEUL : tu cliques un bouton et
+il te sort une nouvelle vague d'idees, adaptee au mois en cours.
+
+Pour chaque idee tu as :
+  - le type de publication (photo, video/Reel, story, concours...)
+  - 🎯 l'OBJECTIF marketing (Reservations, Notoriete, Vente, Fidelisation...)
+  - 💡 l'ANGLE MALIN (l'astuce strategique qui rend l'idee intelligente)
+  - ⏰ le MOMENT IDEAL pour la publier
+  - 🔀 des VARIANTES a tester (dans la recette "Comment la realiser")
+  - 🎥 un SCRIPT / PLAN DETAILLE sur CHAQUE idee (scene par scene) : duree, plan
+    a filmer, texte a l'ecran. Les idees video phares ont meme la REPLIQUE exacte
+    a dire, mot a mot.
+  - pourquoi ca marche pour Amigo
+
+NB : si jamais l'app affiche quelque chose de bizarre, ouvre le menu ☰ et clique
+"🧹 Reinitialiser / Reparer" : ca remet tout d'aplomb (les idees de base reviennent
+au complet). Tu ne peux rien casser de facon permanente.
+  - une legende toute prete (bouton "Copier la legende")
+  - des hashtags
+  - un lien d'exemple cliquable (bouton "Voir un exemple")
+  - *** une RECETTE COMPLETE pour la realiser *** (bouton "🎬 Comment la
+    realiser") : accroche des 3 premieres secondes, plan de tournage etape par
+    etape, texte a mettre a l'ecran, quel son utiliser, l'appel a l'action, une
+    astuce de pro et le materiel necessaire. Bref, du concret, pas juste une idee.
+
+
+COMMENT L'UTILISER
+------------------
+1. Double-clique sur :  Idees-Publications-Amigo.html
+2. Il s'ouvre dans ton navigateur (Chrome, Edge...). AUCUNE installation.
+3. Clique le bouton rouge "Generer de nouvelles idees" autant de fois que tu
+   veux : a chaque clic, une nouvelle selection apparait.
+   ➜ ANTI-REPETITION : l'outil se souvient des idees deja montrees et t'en
+     donne des DIFFERENTES a chaque clic. Quand tu les as toutes vues, il
+     affiche "🔄 nouveau tour" et recommence. (Memorise sur cet ordinateur.)
+4. Le menu ☰ (en haut a gauche) ouvre un panneau avec : tes vues (idees du
+   moment, favoris), les CATEGORIES (Actualite, Famille, Concours...), tes
+   GROUPES, et les outils (selection, restauration).
+5. La barre 🔎 cherche dans tout (titre, texte, theme, hashtag). Le bouton ✕
+   efface la recherche. Le fil sous la barre te dit toujours ou tu es
+   (avec un lien "← retour aux idees").
+6. Sur une idee : "Copier la legende" pour la coller dans ta publication,
+   "Voir un exemple" pour ouvrir un exemple.
+
+
+CLASSER LES IDEES EN GROUPES (dossiers)
+---------------------------------------
+Tu peux ranger tes idees dans des groupes que tu crees toi-meme (ex. "Ete",
+"Concours a faire", "Idees F1"...).
+- Sur une idee, clique "📁 Classer" : coche le(s) groupe(s) ou la mettre, ou
+  tape un nom pour creer un nouveau groupe. Une pastille 📁 apparait sur l'idee.
+- Pour voir un groupe : ouvre le menu ☰ → section MES GROUPES → clique le groupe.
+- Creer/renommer/supprimer un groupe : dans le menu ☰, section MES GROUPES
+  (champ "Nouveau groupe", crayon ✏️ pour renommer, 🗑️ pour supprimer le groupe).
+- En lot : active "Selectionner" (menu ☰), coche plusieurs idees, puis
+  "📁 Classer dans un groupe" pour toutes les ranger d'un coup.
+  (Supprimer un groupe n'efface PAS les idees, juste le classement.)
+
+
+GARDER ET SUPPRIMER DES IDEES
+-----------------------------
+- Le coeur (🤍) en haut a droite d'une idee : clique-le pour la GARDER.
+  Le coeur devient rouge (❤️). Clique le bouton "Mes favoris" en haut pour
+  revoir toutes les idees que tu as aimees.
+- "🗑️ Supprimer" sur une idee : l'enleve de l'affichage.
+- Menu ☰ → "Selectionner des idees" : fait apparaitre une case a cocher sur
+  chaque idee. Coche celles que tu veux, puis (barre en haut) "Supprimer" pour
+  en enlever plusieurs, ou "📁 Classer dans un groupe" pour les ranger.
+  "Tout selectionner" coche tout l'ecran.
+- Tu as supprime par erreur ? Menu ☰ → "♻️ Restaurer les supprimees" remet TOUT.
+
+  NOTE : tes favoris et tes suppressions sont memorises sur CET ordinateur
+  (dans ce navigateur). Si tu ouvres le fichier sur un autre ordinateur, tu
+  repars avec toutes les idees (rien n'est perdu, c'est juste reparti a neuf).
+
+
+UNE APP INTELLIGENTE (elle apprend de toi)
+------------------------------------------
+- Menu ☰ -> "🎯 Recommandé pour moi" : l'app regarde ce que tu AIMES (favoris),
+  ce que tu CLASSES (groupes) et ce que tu SUPPRIMES, et te propose en priorite
+  les idees qui te ressemblent (categories et formats que tu preferes).
+- Le bouton "Generer" est aussi intelligent : il met en avant les idees du mois
+  + celles qui collent a tes gouts, tout en restant varie et sans repetition.
+- Les NOUVELLES sont triees par PERTINENCE : le moteur garde surtout le karting,
+  la F1 / Grand Prix, et les evenements de ta region, et ecarte le hors-sujet.
+  (Plus tu utilises l'app, plus elle te connait.)
+
+
+PLANIFIER, PUBLIER, AJOUTER, EXPORTER (fonctions pro)
+-----------------------------------------------------
+- 📅 PLANIFIER : sur une idee, clique "📅 Planifier" et choisis une date. Tu
+  retrouves ton calendrier dans le menu ☰ -> "📅 Mon plan" (classe par date).
+- ✅ PUBLIE : quand tu as poste une idee, clique "☐ Marquer publie". La vue
+  "✅ Publiees" (menu ☰) montre tout ce que tu as deja fait.
+- ➕ AJOUTER MON IDEE : menu ☰ -> "Ajouter mon idee". Ecris ton titre, ta
+  legende, etc. : elle s'ajoute a l'app (et dans tes favoris).
+- 📤 EXPORTER / IMPRIMER : menu ☰ -> "Exporter / Imprimer". IMPRIME (ou PDF),
+  COPIE TOUT le texte de la vue, ou TELECHARGE un .txt. Pratique pour partager.
+- 📊 RESUME : en haut du menu ☰. ❓ AIDE : menu ☰ -> "Aide / Guide".
+
+
+*** LE PLUS IMPORTANT ***
+Cet outil marche sur N'IMPORTE QUEL ORDINATEUR, sans internet (sauf la recherche
+de nouvelles), sans rien installer, et SANS avoir besoin de Claude.
+Tu peux t'en servir pour toujours, tout seul.
+
+
+POUR LE METTRE SUR UN AUTRE ORDINATEUR
+--------------------------------------
+Option A (automatique) : ce dossier est dans OneDrive. Sur ton autre ordinateur
+connecte au meme compte OneDrive, le dossier "Amigo-Publications" apparait tout
+seul. Rien a faire.
+
+Option B (a la main) : copie le fichier "Idees-Publications-Amigo.html" (ou tout
+le dossier) sur une cle USB, colle-le sur l'autre ordinateur, double-clique.
+Ca marche partout.
+
+
+CHERCHER DES NOUVELLES SUR INTERNET (le moteur de nouvelles)
+------------------------------------------------------------
+*** LE PLUS SIMPLE (aucune installation) ***
+Dans l'app, clique le bouton "🔄 Nouvelles" (en haut, ou menu ☰ -> Outils).
+L'app cherche elle-meme sur internet les actualites pertinentes (karting, F1,
+evenements Gatineau/Outaouais, sorties famille), les trie par pertinence et les
+ajoute dans la categorie "Actualite", avec le lien de la vraie nouvelle.
+  - Besoin SEULEMENT d'une connexion internet (PAS de Python). Marche sur
+    n'importe quel ordinateur, juste avec le navigateur.
+  - Comment ca marche : pour des raisons de securite, un navigateur ne peut pas
+    lire un autre site directement ; l'app passe donc par un petit RELAIS public
+    gratuit. Si ca ne repond pas (relais occupe), reessaie dans un moment.
+  - MEMOIRE : ne repete jamais une nouvelle deja vue, retire les vieilles (~25 j).
+
+Alternative (si tu preferes, et si Python est installe) : double-clique
+"Chercher-de-nouvelles-idees.bat". Meme resultat, en passant par Python.
+
+  - Les idees d'actualite ont un texte de depart a personnaliser ([entre
+    crochets]) : adapte-les a la nouvelle, ou supprime celles qui ne servent pas.
+
+
+POUR DES IDEES ENCORE MEILLEURES (optionnel, avec Claude)
+---------------------------------------------------------
+Quand tu as Claude sous la main, ecris simplement :
+   "trouve de nouvelles idees de publications pour Amigo Karting"
+Claude cherche les tendances et evenements du moment sur internet, ECRIT des
+idees soignees (mieux que le texte automatique), et met le tableau a jour.
+Les nouvelles idees s'ajoutent a celles qui existent deja (rien n'est perdu).
+
+
+CE QU'IL Y A DANS LE DOSSIER
+----------------------------
+  Idees-Publications-Amigo.html      <- LE tableau (celui que tu ouvres)
+  Chercher-de-nouvelles-idees.bat    <- double-clic pour chercher des actualites
+  LISEZMOI.txt                       <- ce fichier
+  (tes favoris, groupes et reglages sont gardes par ton navigateur, sur cet ordi)
+  idees.json                         <- la liste des idees
+  build_html.py                      <- l'outil qui remet le tableau a jour
+  chercher_nouvelles.py              <- le moteur de nouvelles (internet)
+  historique_nouvelles.json          <- memoire des nouvelles deja vues (anti-repetition)
+  skill/                             <- copie du "skill" Claude (pour le reinstaller)
+
+====================================================

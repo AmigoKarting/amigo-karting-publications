@@ -1,0 +1,22 @@
+====================================================
+  (OPTIONNEL) INSTALLER LE SKILL DANS CLAUDE
+====================================================
+
+IMPORTANT : tu n'as PAS besoin de ce skill pour utiliser l'outil.
+Le tableau "Idees-Publications-Amigo.html" fonctionne deja tout seul,
+sur n'importe quel ordinateur. Ce skill est juste un BONUS pour quand
+tu veux que Claude aille chercher des idees d'actualite sur internet.
+
+Le plus simple, sans rien installer :
+  Ouvre Claude (sur l'ordinateur ou se trouve ce dossier) et ecris :
+     "trouve de nouvelles idees de publications pour Amigo Karting,
+      le dossier est dans OneDrive\Desktop\MonApp\Amigo-Publications"
+  Claude va chercher sur le web et mettre le tableau a jour.
+
+Ce dossier "skill" contient :
+  - SKILL.md          : les instructions que Claude suit
+  - build_html.py     : l'outil qui remet le tableau a jour
+  - INSTALLER-LE-SKILL.txt : ce fichier
+
+Tu n'as rien d'autre a faire. Garde ce dossier, c'est tout.
+====================================================
