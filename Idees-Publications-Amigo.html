@@ -64,6 +64,9 @@
   .grille.selection .carte { padding-left:46px; cursor:pointer; }
   .carte.selected { outline:3px solid var(--rouge); outline-offset:1px; }
   .vide { grid-column:1/-1; text-align:center; color:var(--gris); padding:40px 10px; font-size:15px; }
+  .groupe-titre { grid-column:1/-1; font-weight:800; font-size:16px; color:var(--noir);
+                  margin:14px 0 0; padding-bottom:5px; border-bottom:2px solid #fde8e6; }
+  .groupe-titre:first-child { margin-top:0; }
   .carte { position:relative; }
   /* barre du haut : recherche + menu */
   .icone-btn { background:#fff; border:1px solid #d1d5db; border-radius:8px; font-size:18px;
@@ -1809,7 +1812,28 @@
       else if(vue.type==='search') msg = "Aucune idée ne correspond à ta recherche.";
       const d=document.createElement('div'); d.className='vide'; d.textContent=msg; g.appendChild(d);
     } else {
-      liste.forEach(function(it){ g.appendChild(carteHTML(it)); });
+      // Vues "en vrac" -> on RANGE par catégorie (idées du moment en premier dans chaque groupe)
+      var grouper = (vue.type==='moment' || vue.type==='reco' || vue.type==='favoris' || vue.type==='publie');
+      if(grouper){
+        var categories = [];
+        liste.forEach(function(i){ if(categories.indexOf(i.cat)===-1) categories.push(i.cat); });
+        categories.sort(function(x,y){
+          var xm = liste.some(function(i){ return i.cat===x && estDuMoment(i); }) ? 0 : 1;
+          var ym = liste.some(function(i){ return i.cat===y && estDuMoment(i); }) ? 0 : 1;
+          if(xm!==ym) return xm-ym;
+          return x<y ? -1 : 1;
+        });
+        categories.forEach(function(cat){
+          var groupe = liste.filter(function(i){ return i.cat===cat; })
+                            .sort(function(a,b){ return (estDuMoment(a)?0:1) - (estDuMoment(b)?0:1); });
+          var hdr=document.createElement('div'); hdr.className='groupe-titre';
+          hdr.textContent = cat + '  (' + groupe.length + ')';
+          g.appendChild(hdr);
+          groupe.forEach(function(it){ g.appendChild(carteHTML(it)); });
+        });
+      } else {
+        liste.forEach(function(it){ g.appendChild(carteHTML(it)); });
+      }
     }
     document.getElementById('compteur').textContent = liste.length + ' idée(s)';
   }

@@ -36,7 +36,8 @@ COMMENT L'UTILISER
 1. Double-clique sur :  Idees-Publications-Amigo.html
 2. Il s'ouvre dans ton navigateur (Chrome, Edge...). AUCUNE installation.
 3. Clique le bouton rouge "Generer de nouvelles idees" autant de fois que tu
-   veux : a chaque clic, une nouvelle selection apparait.
+   veux : a chaque clic, une nouvelle selection apparait, RANGEE par categorie
+   (avec un petit titre par groupe, et les idees du moment en premier).
    ➜ ANTI-REPETITION : l'outil se souvient des idees deja montrees et t'en
      donne des DIFFERENTES a chaque clic. Quand tu les as toutes vues, il
      affiche "🔄 nouveau tour" et recommence. (Memorise sur cet ordinateur.)
