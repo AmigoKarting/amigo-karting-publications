@@ -32,10 +32,11 @@
   .compteur { color:var(--gris); font-size:13px; }
   .tri-select { padding:10px 12px; border:1px solid var(--bord); border-radius:10px; font-size:14px;
                 background:#fff; color:#344054; cursor:pointer; }
-  main { padding:20px 24px 70px; max-width:1500px; margin:0 auto;
-         display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,340px));
-         justify-content:start; align-items:start; gap:18px; }
-  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:18px;
+  main { padding:20px 24px 70px; max-width:1500px; margin:0 auto; }
+  .section-cartes { display:flex; flex-wrap:wrap; gap:18px; justify-content:center;
+                    align-items:flex-start; margin:0 0 8px; }
+  .carte { width:320px; max-width:100%;
+           background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:18px;
            display:flex; flex-direction:column; gap:11px;
            box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 16px rgba(16,24,40,.045); transition:box-shadow .18s, transform .18s; }
   .carte:hover { box-shadow:0 2px 4px rgba(16,24,40,.05),0 14px 30px rgba(16,24,40,.09); transform:translateY(-2px); }
@@ -75,11 +76,11 @@
           font-size:20px; cursor:pointer; line-height:1; padding:0; opacity:.9; }
   .like:hover { opacity:1; transform:scale(1.12); }
   .select-box { position:absolute; top:16px; left:14px; width:22px; height:22px; cursor:pointer; }
-  .grille.selection .carte { padding-left:46px; cursor:pointer; }
+  #grille.selection .carte { padding-left:46px; cursor:pointer; }
   .carte.selected { outline:2px solid var(--rouge); outline-offset:2px; }
   .vide { grid-column:1/-1; text-align:center; color:var(--gris); padding:40px 10px; font-size:15px; }
-  .groupe-titre { grid-column:1/-1; font-weight:800; font-size:17px; color:var(--noir);
-                  margin:16px 0 2px; padding-bottom:6px; border-bottom:2px solid #fde8e6; }
+  .groupe-titre { font-weight:800; font-size:17px; color:var(--noir);
+                  max-width:1340px; margin:18px auto 10px; padding-bottom:7px; border-bottom:2px solid #fde8e6; }
   .groupe-titre:first-child { margin-top:0; }
   .carte { position:relative; }
   /* barre du haut : recherche + menu */
@@ -175,7 +176,7 @@
     .carte { break-inside:avoid; box-shadow:none; border:1px solid #ccc; margin:0 0 10px; }
   }
   footer { text-align:center; color:var(--gris); font-size:12px; padding:0 22px 40px; line-height:1.6; }
-  @media (max-width:560px){ main{grid-template-columns:1fr;} }
+  @media (max-width:560px){ .carte{width:100%;} .groupe-titre{max-width:100%;} }
 </style>
 </head>
 <body>
@@ -1811,9 +1812,12 @@
       else if(vue.type==='search') msg = "Aucune idée ne correspond à ta recherche.";
       const d=document.createElement('div'); d.className='vide'; d.textContent=msg; g.appendChild(d);
     } else {
-      // Vues "en vrac" -> on RANGE par groupe avec un TITRE par catégorie.
-      // La grille est en colonnes (style Pinterest) : le contenu coule de haut en
-      // bas, donc les titres séparent les catégories SANS laisser de vide à droite.
+      function rangee(cartes){
+        var sec=document.createElement('div'); sec.className='section-cartes';
+        cartes.forEach(function(it){ sec.appendChild(carteHTML(it)); });
+        g.appendChild(sec);
+      }
+      // Vues groupées -> un TITRE par catégorie, puis ses cartes centrées sur une rangée.
       var grouper = (['moment','reco','favoris','publie'].indexOf(vue.type)!==-1) && triMode!=='none';
       if(grouper){
         var clefs = [];
@@ -1830,10 +1834,10 @@
           var hdr=document.createElement('div'); hdr.className='groupe-titre';
           hdr.textContent = k + '  (' + groupe.length + ')';
           g.appendChild(hdr);
-          groupe.forEach(function(it){ g.appendChild(carteHTML(it)); });
+          rangee(groupe);
         });
       } else {
-        liste.forEach(function(it){ g.appendChild(carteHTML(it)); });
+        rangee(liste);
       }
     }
     document.getElementById('compteur').textContent = liste.length + ' idée(s)';
