@@ -48,6 +48,9 @@ COMMENT L'UTILISER
    (avec un lien "← retour aux idees").
 6. Sur une idee : "Copier la legende" pour la coller dans ta publication,
    "Voir un exemple" pour ouvrir un exemple.
+7. PLEIN ECRAN : clique le TITRE de l'idee (ou le bouton "⛶ Plein ecran") pour
+   l'afficher en GRAND, avec tout son contenu (recette + script ouverts) et tous
+   les boutons (copier, favori, planifier, publie, classer).
 
 
 CLASSER LES IDEES EN GROUPES (dossiers)

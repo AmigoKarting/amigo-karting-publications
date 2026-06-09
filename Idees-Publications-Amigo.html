@@ -143,6 +143,13 @@
             border-radius:8px; font-size:14px; font-family:inherit; }
   .modale textarea { min-height:72px; resize:vertical; }
   .modale-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap; }
+  .modale.plein { max-width:920px; }
+  .modale.plein h2 { font-size:24px; }
+  .modale.plein .legende { font-size:15px; }
+  @media (max-width:760px){ .modale.plein { max-width:100%; min-height:92vh; } }
+  .carte h3.ouvrable { cursor:pointer; }
+  .carte h3.ouvrable:hover { color:var(--rouge); }
+  .btn-plein { background:#fff; color:var(--noir); border:1px solid #d1d5db; }
   /* impression / PDF */
   @media print {
     header, .barre, .barre-actions, .fil-actuel, .tiroir, .overlay, .modale-fond, footer,
@@ -1689,6 +1696,11 @@
         '<a class="btn btn-exemple" href="'+esc(ex.url)+'" target="_blank" rel="noopener">🔗 Voir un exemple</a>'+
       '</div>';
 
+    // titre cliquable -> plein écran
+    var h3 = div.querySelector('h3');
+    if(h3){ h3.className='ouvrable'; h3.title='Cliquer pour voir en plein écran';
+      h3.onclick=function(e){ if(selectionMode) return; e.stopPropagation(); ouvrirDetail(it); }; }
+
     // pastilles des groupes (entre les hashtags et les boutons)
     const chips = construireChips(it);
     if(chips) div.insertBefore(chips, div.querySelector('.actions'));
@@ -1728,6 +1740,12 @@
       });
     };
     div.querySelector('.actions').prepend(btn);
+
+    // bouton Plein écran
+    const pleinBtn = document.createElement('button');
+    pleinBtn.className='btn btn-plein'; pleinBtn.textContent='⛶ Plein écran';
+    pleinBtn.onclick = function(e){ e.stopPropagation(); ouvrirDetail(it); };
+    div.querySelector('.actions').appendChild(pleinBtn);
 
     // bouton Classer dans un groupe
     const grpBtn = document.createElement('button');
@@ -1868,9 +1886,54 @@
 
   // ===== Fenêtres (modales) : ajouter une idée, exporter, aide =====
   function fermerModale(){ document.getElementById('modaleFond').classList.remove('ouvert');
-    document.getElementById('modaleBoite').innerHTML=''; }
-  function ouvrirModale(noeud){ const b=document.getElementById('modaleBoite'); b.innerHTML=''; b.appendChild(noeud);
+    var b=document.getElementById('modaleBoite'); b.classList.remove('plein'); b.innerHTML=''; }
+  function ouvrirModale(noeud){ var b=document.getElementById('modaleBoite'); b.classList.remove('plein'); b.innerHTML=''; b.appendChild(noeud);
     document.getElementById('modaleFond').classList.add('ouvert'); }
+
+  // ----- Affichage d'une idée en PLEIN ECRAN -----
+  function ouvrirDetail(it){
+    var ex=exemplePour(it);
+    function bouton(txt, cls, style){ var b=document.createElement('button'); b.className=cls||'btn'; if(style) b.style.cssText=style; b.textContent=txt; return b; }
+    var f=document.createElement('div');
+    var h=document.createElement('h2'); h.textContent=it.titre; f.appendChild(h);
+    var tags=document.createElement('div'); tags.className='tags'; tags.style.marginBottom='10px';
+    tags.innerHTML='<span class="tag">'+esc(it.cat)+'</span><span class="tag format">'+esc(it.format)+'</span>'+
+      (it.objectif?'<span class="tag" style="background:#fef9c3;color:#854d0e">🎯 '+esc(it.objectif)+'</span>':'')+
+      (it.perso?'<span class="tag" style="background:#f3e8ff;color:#7e22ce">✏️ Mon idée</span>':'')+
+      (estDuMoment(it)?'<span class="tag moment">⭐ Idée du moment</span>':'')+
+      (plan[it.titre]?'<span class="badge badge-plan">📅 '+esc(dateLisible(plan[it.titre]))+'</span>':'')+
+      (publie.has(it.titre)?'<span class="badge badge-pub">✅ Publié</span>':'');
+    f.appendChild(tags);
+    if(it.angle){ var a=document.createElement('p'); a.className='angle'; a.innerHTML='💡 <b>Angle malin :</b> '+esc(it.angle); f.appendChild(a); }
+    if(it.momentideal){ var m=document.createElement('p'); m.className='moment-ideal'; m.innerHTML='⏰ <b>Moment idéal :</b> '+esc(it.momentideal); f.appendChild(m); }
+    if(it.pourquoi){ var pq=document.createElement('p'); pq.className='pourquoi'; pq.textContent=it.pourquoi; f.appendChild(pq); }
+    var leg=document.createElement('div'); leg.className='legende'; leg.textContent=it.legende; f.appendChild(leg);
+    var hsh=document.createElement('div'); hsh.className='hash'; hsh.style.margin='8px 0'; hsh.textContent=it.hashtags; f.appendChild(hsh);
+    var chips=construireChips(it); if(chips) f.appendChild(chips);
+    var planRow=document.createElement('div'); planRow.style.margin='12px 0';
+    planRow.innerHTML='📅 <b>Planifier le :</b> ';
+    var di=document.createElement('input'); di.type='date'; di.value=plan[it.titre]||'';
+    di.style.cssText='width:auto;padding:7px;border:1px solid #d1d5db;border-radius:6px';
+    di.onchange=function(){ if(di.value)plan[it.titre]=di.value; else delete plan[it.titre]; sauverPlan(); render(); fermerModale(); ouvrirDetail(it); };
+    planRow.appendChild(di); f.appendChild(planRow);
+    var r=recetteHTML(it); if(r){ r.open=true; f.appendChild(r); }
+    var sc=scriptHTML(it); if(sc){ sc.open=true; f.appendChild(sc); }
+    var act=document.createElement('div'); act.className='modale-actions'; act.style.justifyContent='flex-start';
+    var cop=bouton('📋 Copier la légende','btn btn-copier');
+    cop.onclick=function(){ navigator.clipboard.writeText(it.legende+'\n\n'+it.hashtags).then(function(){ var o=cop.textContent; cop.textContent='✅ Copié !'; setTimeout(function(){cop.textContent=o;},1500); }); };
+    var exa=document.createElement('a'); exa.className='btn btn-exemple'; exa.href=ex.url; exa.target='_blank'; exa.rel='noopener'; exa.textContent='🔗 Voir un exemple';
+    var fav=bouton(likes.has(it.titre)?'❤️ Favori':'🤍 Favori','btn','background:#fff;color:#e23b2e;border:1px solid #e23b2e');
+    fav.onclick=function(){ if(likes.has(it.titre))likes.delete(it.titre);else likes.add(it.titre); sauver(); render(); fermerModale(); ouvrirDetail(it); };
+    var estPub=publie.has(it.titre);
+    var pub=bouton(estPub?'✅ Publié':'☐ Marquer publié','btn', estPub?'background:#067647;color:#fff':'background:#fff;color:#067647;border:1px solid #067647');
+    pub.onclick=function(){ togglePublie(it); fermerModale(); ouvrirDetail(it); };
+    var grp=bouton('📁 Classer','btn btn-grp'); grp.onclick=function(){ fermerModale(); /* ouvrir le popover sur la carte */ var c=[].slice.call(document.querySelectorAll('#grille .carte')).filter(function(x){ var t=x.querySelector('h3'); return t&&t.textContent===it.titre; })[0]; if(c){ ouvrirPop(it,c); c.scrollIntoView({block:'center'}); } };
+    var close=bouton('Fermer','gros-btn'); close.onclick=fermerModale;
+    act.appendChild(cop); act.appendChild(exa); act.appendChild(fav); act.appendChild(pub); act.appendChild(grp); act.appendChild(close);
+    f.appendChild(act);
+    ouvrirModale(f);
+    document.getElementById('modaleBoite').classList.add('plein');
+  }
 
   function ajouterIdeePerso(o){
     if(idees.some(function(i){ return i.titre===o.titre; })){ alert("Une idée porte déjà ce titre. Change-le un peu."); return false; }
