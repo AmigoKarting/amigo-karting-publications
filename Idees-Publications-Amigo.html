@@ -29,9 +29,9 @@
   .tri-select { padding:9px 10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px;
                 background:#fff; color:var(--noir); cursor:pointer; }
   main { padding:14px 22px 60px; max-width:1500px; margin:0 auto;
-         display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,360px)); gap:14px;
-         justify-content:center; align-items:start; }
-  .carte { background:var(--carte); border:1px solid #e5e7eb; border-radius:14px; padding:15px;
+         column-width:330px; column-gap:16px; }
+  .carte { break-inside:avoid; margin:0 0 16px; width:100%;
+           background:var(--carte); border:1px solid #e5e7eb; border-radius:14px; padding:15px;
            display:flex; flex-direction:column; gap:10px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
   .tags { display:flex; gap:6px; flex-wrap:wrap; }
   .tag { font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px;
@@ -67,9 +67,9 @@
   .grille.selection .carte { padding-left:46px; cursor:pointer; }
   .carte.selected { outline:3px solid var(--rouge); outline-offset:1px; }
   .vide { grid-column:1/-1; text-align:center; color:var(--gris); padding:40px 10px; font-size:15px; }
-  .groupe-titre { grid-column:1/-1; font-weight:800; font-size:16px; color:var(--noir);
-                  margin:14px 0 0; padding-bottom:5px; border-bottom:2px solid #fde8e6; }
-  .groupe-titre:first-child { margin-top:0; }
+  .groupe-titre { break-inside:avoid; break-after:avoid; -webkit-column-break-after:avoid;
+                  font-weight:800; font-size:16px; color:var(--noir);
+                  margin:6px 0 10px; padding-bottom:5px; border-bottom:2px solid #fde8e6; }
   .carte { position:relative; }
   /* barre du haut : recherche + menu */
   .icone-btn { background:#fff; border:1px solid #d1d5db; border-radius:8px; font-size:18px;
@@ -164,7 +164,7 @@
     .carte { break-inside:avoid; box-shadow:none; border:1px solid #ccc; margin:0 0 10px; }
   }
   footer { text-align:center; color:var(--gris); font-size:12px; padding:0 22px 40px; line-height:1.6; }
-  @media (max-width:560px){ main{grid-template-columns:1fr;} }
+  @media (max-width:560px){ main{column-width:auto; column-count:1;} }
 </style>
 </head>
 <body>
@@ -1830,10 +1830,10 @@
       else if(vue.type==='search') msg = "Aucune idée ne correspond à ta recherche.";
       const d=document.createElement('div'); d.className='vide'; d.textContent=msg; g.appendChild(d);
     } else {
-      // On RANGE les cartes par groupe (catégorie/objectif/format) + idées du moment d'abord,
-      // mais SANS titre qui casse la rangée -> les cartes remplissent toute la largeur.
+      // Vues "en vrac" -> on RANGE par groupe avec un TITRE par catégorie.
+      // La grille est en colonnes (style Pinterest) : le contenu coule de haut en
+      // bas, donc les titres séparent les catégories SANS laisser de vide à droite.
       var grouper = (['moment','reco','favoris','publie'].indexOf(vue.type)!==-1) && triMode!=='none';
-      var aAfficher = liste;
       if(grouper){
         var clefs = [];
         liste.forEach(function(i){ var k=cleGroupe(i); if(clefs.indexOf(k)===-1) clefs.push(k); });
@@ -1843,14 +1843,17 @@
           if(xm!==ym) return xm-ym;
           return x<y ? -1 : 1;
         });
-        aAfficher = [];
         clefs.forEach(function(k){
-          liste.filter(function(i){ return cleGroupe(i)===k; })
-               .sort(function(a,b){ return (estDuMoment(a)?0:1) - (estDuMoment(b)?0:1); })
-               .forEach(function(it){ aAfficher.push(it); });
+          var groupe = liste.filter(function(i){ return cleGroupe(i)===k; })
+                            .sort(function(a,b){ return (estDuMoment(a)?0:1) - (estDuMoment(b)?0:1); });
+          var hdr=document.createElement('div'); hdr.className='groupe-titre';
+          hdr.textContent = k + '  (' + groupe.length + ')';
+          g.appendChild(hdr);
+          groupe.forEach(function(it){ g.appendChild(carteHTML(it)); });
         });
+      } else {
+        liste.forEach(function(it){ g.appendChild(carteHTML(it)); });
       }
-      aAfficher.forEach(function(it){ g.appendChild(carteHTML(it)); });
     }
     document.getElementById('compteur').textContent = liste.length + ' idée(s)';
   }
