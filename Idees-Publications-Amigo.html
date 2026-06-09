@@ -5,67 +5,78 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Idées de publications - Amigo Karting</title>
 <style>
-  :root { --rouge:#e23b2e; --noir:#15171c; --gris:#6b7280; --bg:#f4f5f7; --carte:#ffffff; }
+  :root { --rouge:#e23b2e; --rouge-d:#c32a1f; --noir:#16181d; --gris:#667085; --bg:#f3f4f6;
+          --carte:#ffffff; --bord:#e7e9ee; --chip:#f1f3f6; }
   * { box-sizing:border-box; }
   body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-         background:var(--bg); color:var(--noir); }
-  header { background:linear-gradient(135deg,#15171c,#e23b2e); color:#fff; padding:30px 22px 24px; }
-  header h1 { margin:0 0 6px; font-size:26px; }
-  header p { margin:0; opacity:.92; font-size:15px; }
-  .saison { display:inline-block; margin-top:12px; background:rgba(255,255,255,.16);
-            padding:6px 14px; border-radius:999px; font-size:14px; }
-  .barre { position:sticky; top:0; z-index:5; background:#fff; border-bottom:1px solid #e5e7eb;
-           padding:12px 22px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
-  .gros-btn { background:var(--rouge); color:#fff; border:none; padding:12px 20px; border-radius:10px;
-              font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 2px 6px rgba(226,59,46,.35); }
+         background:var(--bg); color:var(--noir); -webkit-font-smoothing:antialiased; }
+  header { background:linear-gradient(120deg,#1b1e27 0%,#2c3140 100%); color:#fff;
+           padding:28px 26px 24px; border-bottom:3px solid var(--rouge); }
+  header h1 { margin:0 0 6px; font-size:25px; font-weight:750; letter-spacing:-.015em; }
+  header p { margin:0; opacity:.82; font-size:14.5px; }
+  .saison { display:inline-block; margin-top:13px; background:rgba(255,255,255,.1);
+            padding:6px 14px; border-radius:999px; font-size:13.5px; }
+  .barre { position:sticky; top:0; z-index:5; background:rgba(255,255,255,.88); backdrop-filter:blur(10px);
+           border-bottom:1px solid var(--bord); padding:12px 24px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .gros-btn { background:var(--rouge); color:#fff; border:none; padding:11px 18px; border-radius:10px;
+              font-size:14.5px; font-weight:650; cursor:pointer; box-shadow:0 1px 2px rgba(226,59,46,.2); transition:background .15s; }
+  .gros-btn:hover { background:var(--rouge-d); }
   .gros-btn:active { transform:translateY(1px); }
-  .recherche { flex:1 1 200px; min-width:160px; padding:9px 12px; border:1px solid #d1d5db;
-               border-radius:8px; font-size:14px; }
-  .filtre { border:1px solid #d1d5db; background:#fff; color:var(--noir); padding:7px 13px;
+  .recherche { flex:1 1 200px; min-width:160px; padding:10px 12px; border:1px solid var(--bord);
+               border-radius:10px; font-size:14px; background:#fff; }
+  .recherche:focus { outline:none; border-color:var(--rouge); box-shadow:0 0 0 3px rgba(226,59,46,.12); }
+  .filtre { border:1px solid var(--bord); background:#fff; color:#344054; padding:7px 13px;
             border-radius:999px; font-size:13px; cursor:pointer; }
   .filtre.actif { background:var(--rouge); color:#fff; border-color:var(--rouge); }
-  .ligne-filtres { padding:10px 22px 0; display:flex; gap:8px; flex-wrap:wrap; max-width:1500px; margin:0 auto; }
+  .ligne-filtres { padding:10px 24px 0; display:flex; gap:8px; flex-wrap:wrap; max-width:1500px; margin:0 auto; }
   .compteur { color:var(--gris); font-size:13px; }
-  .tri-select { padding:9px 10px; border:1px solid #d1d5db; border-radius:8px; font-size:14px;
-                background:#fff; color:var(--noir); cursor:pointer; }
-  main { padding:14px 22px 60px; max-width:1500px; margin:0 auto;
+  .tri-select { padding:10px 12px; border:1px solid var(--bord); border-radius:10px; font-size:14px;
+                background:#fff; color:#344054; cursor:pointer; }
+  main { padding:20px 24px 70px; max-width:1500px; margin:0 auto;
          display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,340px));
-         justify-content:start; align-items:start; gap:16px; }
-  .carte { background:var(--carte); border:1px solid #e5e7eb; border-radius:14px; padding:15px;
-           display:flex; flex-direction:column; gap:10px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
-  .tags { display:flex; gap:6px; flex-wrap:wrap; }
-  .tag { font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px;
-         background:#fde8e6; color:var(--rouge); }
-  .tag.format { background:#eef2ff; color:#4338ca; }
+         justify-content:start; align-items:start; gap:18px; }
+  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:18px;
+           display:flex; flex-direction:column; gap:11px;
+           box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 16px rgba(16,24,40,.045); transition:box-shadow .18s, transform .18s; }
+  .carte:hover { box-shadow:0 2px 4px rgba(16,24,40,.05),0 14px 30px rgba(16,24,40,.09); transform:translateY(-2px); }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; padding-right:30px; }
+  .tag { font-size:11px; font-weight:600; padding:3px 9px; border-radius:7px;
+         background:var(--chip); color:#475467; }
+  .tag.format { background:#eef1ff; color:#5059d6; }
   .tag.moment { background:#ecfdf3; color:#067647; }
-  .carte h3 { margin:2px 0 0; font-size:17px; line-height:1.3; }
-  .pourquoi { font-size:13px; color:var(--gris); margin:0; }
-  .angle { font-size:13px; margin:0; background:#fffbeb; border-left:3px solid #f59e0b;
-           padding:7px 10px; border-radius:6px; }
-  .moment-ideal { font-size:12.5px; color:#4338ca; margin:0; }
-  .legende { background:#f9fafb; border-left:3px solid var(--rouge); padding:10px 12px;
-             border-radius:6px; font-size:13px; white-space:pre-wrap; }
-  .hash { font-size:12px; color:#4338ca; }
-  .actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; }
-  .btn { font-size:13px; padding:8px 12px; border-radius:8px; border:none; cursor:pointer;
-         text-decoration:none; display:inline-block; }
-  .btn-copier { background:var(--noir); color:#fff; }
-  .btn-exemple { background:#fff; color:var(--rouge); border:1px solid var(--rouge); }
-  .btn-suppr { background:#fff; color:#b91c1c; border:1px solid #b91c1c; }
-  .btn-bar { border:1px solid #d1d5db; background:#fff; color:var(--noir); padding:9px 14px;
-             border-radius:8px; font-size:14px; cursor:pointer; }
+  .carte h3 { margin:1px 0 0; font-size:16px; font-weight:700; line-height:1.35; letter-spacing:-.01em; }
+  .pourquoi { font-size:13px; color:var(--gris); margin:0; line-height:1.5; }
+  .angle { font-size:12.5px; margin:0; background:#fff8ea; color:#785611;
+           padding:9px 11px; border-radius:10px; line-height:1.45; }
+  .moment-ideal { font-size:12.5px; color:#5957d4; margin:0; }
+  .legende { background:#f7f8fb; border:1px solid #eef0f4; padding:11px 13px;
+             border-radius:10px; font-size:13px; line-height:1.5; color:#344054; white-space:pre-wrap; }
+  .hash { font-size:12px; color:#6172f3; }
+  .actions { display:flex; gap:7px; flex-wrap:wrap; margin-top:auto; padding-top:4px; }
+  .btn { font-size:12.5px; padding:8px 12px; border-radius:9px; border:1px solid var(--bord); cursor:pointer;
+         text-decoration:none; display:inline-block; background:#fff; color:#475467; font-weight:600; transition:background .15s,border-color .15s,color .15s; }
+  .btn:hover { background:#f7f8fa; }
+  .btn-copier { background:var(--noir); color:#fff; border-color:var(--noir); }
+  .btn-copier:hover { background:#000; }
+  .btn-exemple, .btn-grp, .btn-plein { background:#fff; color:#475467; border:1px solid var(--bord); }
+  .btn-suppr { background:#fff; color:#667085; border:1px solid var(--bord); }
+  .btn-suppr:hover { color:#d92d20; border-color:#fda29b; }
+  .btn-pub-actif { background:#ecfdf3; color:#067647; border-color:#a6f4c5; }
+  .btn-bar { border:1px solid var(--bord); background:#fff; color:#344054; padding:9px 14px;
+             border-radius:10px; font-size:14px; cursor:pointer; transition:background .15s; }
+  .btn-bar:hover { background:#f7f8fa; }
   .btn-bar.actif { background:var(--rouge); color:#fff; border-color:var(--rouge); }
-  .btn-danger { background:#b91c1c; color:#fff; border:none; padding:9px 14px; border-radius:8px;
+  .btn-danger { background:#d92d20; color:#fff; border:none; padding:9px 14px; border-radius:10px;
                 font-size:14px; cursor:pointer; }
-  .barre-actions { padding:10px 22px 0; max-width:1500px; margin:0 auto;
+  .barre-actions { padding:10px 24px 0; max-width:1500px; margin:0 auto;
                    display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
   .info-suppr { font-size:13px; color:var(--gris); }
-  .tags { padding-right:30px; }
-  .like { position:absolute; top:14px; right:14px; background:none; border:none;
-          font-size:22px; cursor:pointer; line-height:1; padding:0; }
+  .like { position:absolute; top:15px; right:15px; background:none; border:none;
+          font-size:20px; cursor:pointer; line-height:1; padding:0; opacity:.9; }
+  .like:hover { opacity:1; transform:scale(1.12); }
   .select-box { position:absolute; top:16px; left:14px; width:22px; height:22px; cursor:pointer; }
   .grille.selection .carte { padding-left:46px; cursor:pointer; }
-  .carte.selected { outline:3px solid var(--rouge); outline-offset:1px; }
+  .carte.selected { outline:2px solid var(--rouge); outline-offset:2px; }
   .vide { grid-column:1/-1; text-align:center; color:var(--gris); padding:40px 10px; font-size:15px; }
   .groupe-titre { grid-column:1/-1; font-weight:800; font-size:17px; color:var(--noir);
                   margin:16px 0 2px; padding-bottom:6px; border-bottom:2px solid #fde8e6; }
@@ -108,7 +119,7 @@
   .grp-chip { font-size:11px; background:#eef2ff; color:#4338ca; border-radius:999px; padding:3px 8px;
               display:inline-flex; align-items:center; gap:4px; }
   .grp-chip button { border:none; background:none; cursor:pointer; color:#4338ca; font-size:12px; padding:0; }
-  .btn-grp { background:#fff; color:#4338ca; border:1px solid #4338ca; }
+  .btn-grp { background:#fff; color:#475467; border:1px solid var(--bord); }
   .pop { position:absolute; z-index:9; background:#fff; border:1px solid #d1d5db; border-radius:10px;
          box-shadow:0 6px 20px rgba(0,0,0,.16); padding:8px; min-width:210px; right:14px; bottom:54px; }
   .pop label { display:flex; align-items:center; gap:8px; padding:6px; font-size:14px; cursor:pointer; }
@@ -155,7 +166,7 @@
   @media (max-width:760px){ .modale.plein { max-width:100%; min-height:92vh; } }
   .carte h3.ouvrable { cursor:pointer; }
   .carte h3.ouvrable:hover { color:var(--rouge); }
-  .btn-plein { background:#fff; color:var(--noir); border:1px solid #d1d5db; }
+  .btn-plein { background:#fff; color:#475467; border:1px solid var(--bord); }
   /* impression / PDF */
   @media print {
     header, .barre, .barre-actions, .fil-actuel, .tiroir, .overlay, .modale-fond, footer,
@@ -1772,7 +1783,7 @@
 
     // bouton Planifier (calendrier)
     const planBtn = document.createElement('button');
-    planBtn.className='btn'; planBtn.style.cssText='background:#fff;color:#1d4ed8;border:1px solid #1d4ed8';
+    planBtn.className='btn btn-plein';
     planBtn.textContent = plan[it.titre] ? ('📅 '+dateLisible(plan[it.titre])) : '📅 Planifier';
     planBtn.onclick = function(e){ e.stopPropagation();
       const p=document.getElementById('pop-actif'); if(p && div.contains(p)) fermerPop(); else planifier(it, div); };
@@ -1780,8 +1791,7 @@
 
     // bouton Publié
     const estPub = publie.has(it.titre);
-    const pubBtn = document.createElement('button'); pubBtn.className='btn';
-    pubBtn.style.cssText = estPub ? 'background:#067647;color:#fff' : 'background:#fff;color:#067647;border:1px solid #067647';
+    const pubBtn = document.createElement('button'); pubBtn.className='btn' + (estPub?' btn-pub-actif':'');
     pubBtn.textContent = estPub ? '✅ Publié' : '☐ Marquer publié';
     pubBtn.onclick = function(e){ e.stopPropagation(); togglePublie(it); };
     div.querySelector('.actions').appendChild(pubBtn);
@@ -1966,10 +1976,10 @@
     var cop=bouton('📋 Copier la légende','btn btn-copier');
     cop.onclick=function(){ navigator.clipboard.writeText(it.legende+'\n\n'+it.hashtags).then(function(){ var o=cop.textContent; cop.textContent='✅ Copié !'; setTimeout(function(){cop.textContent=o;},1500); }); };
     var exa=document.createElement('a'); exa.className='btn btn-exemple'; exa.href=ex.url; exa.target='_blank'; exa.rel='noopener'; exa.textContent='🔗 Voir un exemple';
-    var fav=bouton(likes.has(it.titre)?'❤️ Favori':'🤍 Favori','btn','background:#fff;color:#e23b2e;border:1px solid #e23b2e');
+    var fav=bouton(likes.has(it.titre)?'❤️ Favori':'🤍 Favori','btn');
     fav.onclick=function(){ if(likes.has(it.titre))likes.delete(it.titre);else likes.add(it.titre); sauver(); render(); fermerModale(); ouvrirDetail(it); };
     var estPub=publie.has(it.titre);
-    var pub=bouton(estPub?'✅ Publié':'☐ Marquer publié','btn', estPub?'background:#067647;color:#fff':'background:#fff;color:#067647;border:1px solid #067647');
+    var pub=bouton(estPub?'✅ Publié':'☐ Marquer publié','btn'+(estPub?' btn-pub-actif':''));
     pub.onclick=function(){ togglePublie(it); fermerModale(); ouvrirDetail(it); };
     var grp=bouton('📁 Classer','btn btn-grp'); grp.onclick=function(){ fermerModale(); /* ouvrir le popover sur la carte */ var c=[].slice.call(document.querySelectorAll('#grille .carte')).filter(function(x){ var t=x.querySelector('h3'); return t&&t.textContent===it.titre; })[0]; if(c){ ouvrirPop(it,c); c.scrollIntoView({block:'center'}); } };
     var close=bouton('Fermer','gros-btn'); close.onclick=fermerModale;
