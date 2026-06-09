@@ -1830,8 +1830,10 @@
       else if(vue.type==='search') msg = "Aucune idée ne correspond à ta recherche.";
       const d=document.createElement('div'); d.className='vide'; d.textContent=msg; g.appendChild(d);
     } else {
-      // Vues "en vrac" -> on RANGE selon le menu Trier (idées du moment en premier dans chaque groupe)
+      // On RANGE les cartes par groupe (catégorie/objectif/format) + idées du moment d'abord,
+      // mais SANS titre qui casse la rangée -> les cartes remplissent toute la largeur.
       var grouper = (['moment','reco','favoris','publie'].indexOf(vue.type)!==-1) && triMode!=='none';
+      var aAfficher = liste;
       if(grouper){
         var clefs = [];
         liste.forEach(function(i){ var k=cleGroupe(i); if(clefs.indexOf(k)===-1) clefs.push(k); });
@@ -1841,17 +1843,14 @@
           if(xm!==ym) return xm-ym;
           return x<y ? -1 : 1;
         });
+        aAfficher = [];
         clefs.forEach(function(k){
-          var groupe = liste.filter(function(i){ return cleGroupe(i)===k; })
-                            .sort(function(a,b){ return (estDuMoment(a)?0:1) - (estDuMoment(b)?0:1); });
-          var hdr=document.createElement('div'); hdr.className='groupe-titre';
-          hdr.textContent = k + '  (' + groupe.length + ')';
-          g.appendChild(hdr);
-          groupe.forEach(function(it){ g.appendChild(carteHTML(it)); });
+          liste.filter(function(i){ return cleGroupe(i)===k; })
+               .sort(function(a,b){ return (estDuMoment(a)?0:1) - (estDuMoment(b)?0:1); })
+               .forEach(function(it){ aAfficher.push(it); });
         });
-      } else {
-        liste.forEach(function(it){ g.appendChild(carteHTML(it)); });
       }
+      aAfficher.forEach(function(it){ g.appendChild(carteHTML(it)); });
     }
     document.getElementById('compteur').textContent = liste.length + ' idée(s)';
   }
