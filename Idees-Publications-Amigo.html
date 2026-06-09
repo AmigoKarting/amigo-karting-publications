@@ -1766,41 +1766,12 @@
     };
     div.querySelector('.actions').prepend(btn);
 
-    // bouton Plein écran
+    // bouton Agrandir (plein écran) -> donne accès à Planifier / Publié / Classer / Supprimer
     const pleinBtn = document.createElement('button');
-    pleinBtn.className='btn btn-plein'; pleinBtn.textContent='⛶ Plein écran';
+    pleinBtn.className='btn btn-plein'; pleinBtn.textContent='⛶ Agrandir';
+    pleinBtn.title='Voir en grand + planifier, publier, classer, supprimer';
     pleinBtn.onclick = function(e){ e.stopPropagation(); ouvrirDetail(it); };
     div.querySelector('.actions').appendChild(pleinBtn);
-
-    // bouton Classer dans un groupe
-    const grpBtn = document.createElement('button');
-    grpBtn.className='btn btn-grp'; grpBtn.textContent='📁 Classer';
-    grpBtn.onclick = function(e){ e.stopPropagation();
-      const p=document.getElementById('pop-actif');
-      if(p && div.contains(p)) fermerPop(); else ouvrirPop(it, div);
-    };
-    div.querySelector('.actions').appendChild(grpBtn);
-
-    // bouton Planifier (calendrier)
-    const planBtn = document.createElement('button');
-    planBtn.className='btn btn-plein';
-    planBtn.textContent = plan[it.titre] ? ('📅 '+dateLisible(plan[it.titre])) : '📅 Planifier';
-    planBtn.onclick = function(e){ e.stopPropagation();
-      const p=document.getElementById('pop-actif'); if(p && div.contains(p)) fermerPop(); else planifier(it, div); };
-    div.querySelector('.actions').appendChild(planBtn);
-
-    // bouton Publié
-    const estPub = publie.has(it.titre);
-    const pubBtn = document.createElement('button'); pubBtn.className='btn' + (estPub?' btn-pub-actif':'');
-    pubBtn.textContent = estPub ? '✅ Publié' : '☐ Marquer publié';
-    pubBtn.onclick = function(e){ e.stopPropagation(); togglePublie(it); };
-    div.querySelector('.actions').appendChild(pubBtn);
-
-    // bouton Supprimer (cette idée)
-    const sup = document.createElement('button');
-    sup.className='btn btn-suppr'; sup.textContent='🗑️ Supprimer';
-    sup.onclick = function(e){ e.stopPropagation(); supprimerUne(it); };
-    div.querySelector('.actions').appendChild(sup);
 
     return div;
   }
@@ -1982,8 +1953,9 @@
     var pub=bouton(estPub?'✅ Publié':'☐ Marquer publié','btn'+(estPub?' btn-pub-actif':''));
     pub.onclick=function(){ togglePublie(it); fermerModale(); ouvrirDetail(it); };
     var grp=bouton('📁 Classer','btn btn-grp'); grp.onclick=function(){ fermerModale(); /* ouvrir le popover sur la carte */ var c=[].slice.call(document.querySelectorAll('#grille .carte')).filter(function(x){ var t=x.querySelector('h3'); return t&&t.textContent===it.titre; })[0]; if(c){ ouvrirPop(it,c); c.scrollIntoView({block:'center'}); } };
+    var sup=bouton('🗑️ Supprimer','btn btn-suppr'); sup.onclick=function(){ fermerModale(); supprimerUne(it); };
     var close=bouton('Fermer','gros-btn'); close.onclick=fermerModale;
-    act.appendChild(cop); act.appendChild(exa); act.appendChild(fav); act.appendChild(pub); act.appendChild(grp); act.appendChild(close);
+    act.appendChild(cop); act.appendChild(exa); act.appendChild(fav); act.appendChild(pub); act.appendChild(grp); act.appendChild(sup); act.appendChild(close);
     f.appendChild(act);
     ouvrirModale(f);
     document.getElementById('modaleBoite').classList.add('plein');
